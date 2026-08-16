@@ -2757,3 +2757,75 @@ button:disabled {
   .help-panel > p, .help-panel .support-hours { margin-top: 10px; }
   .soft-tip > button { margin-right: 0; }
 }
+
+/* Authentication and Supabase states */
+.app-loading,
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--green-900);
+  background: radial-gradient(circle at 15% 10%, #e8f4ef 0, transparent 35%), var(--canvas);
+}
+
+.app-loading { align-content: center; gap: 12px; font-size: 12px; }
+.loading-spinner {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  border: 3px solid #d8e7e2;
+  border-top-color: var(--green-700);
+  border-radius: 50%;
+  animation: auth-spin .75s linear infinite;
+}
+@keyframes auth-spin { to { transform: rotate(360deg); } }
+
+.auth-card {
+  width: min(100%, 440px);
+  padding: 34px;
+  border: 1px solid #dce7e3;
+  border-radius: 22px;
+  background: rgba(255,255,255,.97);
+  box-shadow: 0 24px 65px rgba(18, 63, 52, .13);
+}
+.auth-brand { display: flex; align-items: center; gap: 11px; }
+.auth-brand > div { display: flex; flex-direction: column; }
+.auth-brand strong { font-size: 16px; }
+.auth-brand small { margin-top: 2px; color: #81908b; font-size: 8px; }
+.auth-logo {
+  width: 46px; height: 46px; display: grid; place-items: center;
+  border-radius: 14px; color: #fff; background: var(--green-800);
+}
+.auth-copy { margin: 28px 0 20px; }
+.auth-copy h1, .setup-card h1 { margin: 0 0 8px; font-size: 24px; }
+.auth-copy p, .setup-card > p { margin: 0; color: #71807b; font-size: 10px; line-height: 1.9; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 11px; background: #f0f5f3; }
+.auth-tabs button { height: 36px; border: 0; border-radius: 8px; color: #74837e; background: transparent; font: inherit; font-size: 10px; cursor: pointer; }
+.auth-tabs button.active { color: var(--green-900); background: #fff; box-shadow: 0 2px 8px rgba(28,62,53,.08); font-weight: 700; }
+.auth-form { margin-top: 18px; display: grid; gap: 13px; }
+.auth-form label { color: #40534d; font-size: 9px; font-weight: 600; }
+.auth-input { height: 43px; margin-top: 6px; padding: 0 12px; display: flex; align-items: center; gap: 9px; border: 1px solid #d8e2df; border-radius: 10px; color: #87958f; }
+.auth-input:focus-within { border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(64,132,109,.1); }
+.auth-input input { width: 100%; border: 0; outline: 0; background: transparent; font: inherit; font-size: 11px; }
+.auth-submit { width: 100%; margin-top: 4px; justify-content: center; }
+.auth-divider { margin: 19px 0; display: flex; align-items: center; gap: 10px; color: #99a5a1; font-size: 8px; }
+.auth-divider::before, .auth-divider::after { content: ''; height: 1px; flex: 1; background: #e4ebe8; }
+.guest-btn { width: 100%; padding: 13px; display: flex; align-items: center; gap: 11px; border: 1px solid #d6e3de; border-radius: 11px; color: var(--green-800); background: #f7faf9; text-align: right; cursor: pointer; }
+.guest-btn > span { display: flex; flex-direction: column; gap: 3px; }
+.guest-btn strong { font-size: 10px; }
+.guest-btn small { color: #7d8d87; font-size: 7.5px; line-height: 1.7; }
+.guest-btn:disabled, .auth-submit:disabled { opacity: .6; cursor: wait; }
+.auth-privacy { margin: 14px 5px 0; color: #8b9894; font-size: 7.5px; line-height: 1.8; text-align: center; }
+.auth-alert { padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-radius: 9px; color: #7a622b; background: #fff7e6; font-size: 8.5px; line-height: 1.7; }
+.auth-alert.error { color: #9a3f3f; background: #fff0f0; }
+.auth-alert.success { color: #286b55; background: #edf8f4; }
+.setup-card { text-align: center; }
+.setup-card .auth-logo { margin: 0 auto 22px; }
+.setup-card pre { margin: 18px 0; padding: 14px; overflow: auto; border-radius: 10px; direction: ltr; color: #d9f1e9; background: #173d33; text-align: left; font-size: 10px; }
+.setup-card code { direction: ltr; }
+
+@media (max-width: 520px) {
+  .auth-shell { padding: 12px; }
+  .auth-card { padding: 25px 20px; border-radius: 18px; }
+}
