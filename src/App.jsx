@@ -41,6 +41,9 @@ import {
   Volume2,
   X,
 } from 'lucide-react';
+import AuthScreen from './components/AuthScreen';
+import { isSupabaseConfigured, supabase } from './lib/supabase';
+import { createReport, fetchReports, updateReportStatus } from './services/reports';
 
 const reportTypes = [
   { id: 'noise', title: 'سر و صدای زیاد', hint: 'موسیقی، مهمانی یا ساخت‌وساز', Icon: Volume2, color: 'coral' },
@@ -48,42 +51,6 @@ const reportTypes = [
   { id: 'common', title: 'مشاعات ساختمان', hint: 'راهرو، آسانسور یا حیاط', Icon: Building2, color: 'green' },
   { id: 'pet', title: 'حیوانات خانگی', hint: 'صدا یا نگهداری نامناسب', Icon: PawPrint, color: 'purple' },
   { id: 'other', title: 'سایر موارد', hint: 'موضوعی خارج از دسته‌های بالا', Icon: MoreHorizontal, color: 'sand' },
-];
-
-const initialReports = [
-  {
-    id: 'HY-2841',
-    type: 'noise',
-    title: 'سر و صدای زیاد در ساعات استراحت',
-    date: '۲۳ مرداد ۱۴۰۵',
-    time: '۲۳:۴۵',
-    place: 'واحد ۵، طبقه سوم',
-    status: 'reviewing',
-    description: 'پخش موسیقی با صدای بلند پس از ساعت ۱۱ شب و تکرار آن در چند شب گذشته.',
-    updates: 2,
-  },
-  {
-    id: 'HY-2796',
-    type: 'parking',
-    title: 'پارک خودرو مقابل ورودی پارکینگ',
-    date: '۱۹ مرداد ۱۴۰۵',
-    time: '۱۸:۲۰',
-    place: 'ورودی جنوبی ساختمان',
-    status: 'answered',
-    description: 'خودروی مهمان یکی از واحدها مسیر ورود به پارکینگ را مسدود کرده بود.',
-    updates: 1,
-  },
-  {
-    id: 'HY-2614',
-    type: 'common',
-    title: 'قرار دادن وسایل در راهروی مشترک',
-    date: '۰۸ مرداد ۱۴۰۵',
-    time: '۱۰:۱۵',
-    place: 'راهروی طبقه دوم',
-    status: 'resolved',
-    description: 'چند وسیله حجیم مسیر عبور در راهروی مشترک را محدود کرده بود.',
-    updates: 3,
-  },
 ];
 
 const navItems = [
@@ -118,14 +85,10 @@ function getPersianToday() {
 
 function App() {
   const [activePage, setActivePage] = useState('dashboard');
-  const [reports, setReports] = useState(() => {
-    try {
-      const saved = window.localStorage.getItem('hamsayehyar-reports');
-      return saved ? JSON.parse(saved) : initialReports;
-    } catch {
-      return initialReports;
-    }
-  });
+  const [session, setSession] = useState(null);
+  const [authLoading, setAuthLoading] = useState(isSupabaseConfigured);
+  const [reports, setReports] = useState([]);
+  const [reportsLoading, setReportsLoading] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -133,12 +96,41 @@ function App() {
   const [toast, setToast] = useState('');
 
   useEffect(() => {
-    window.localStorage.setItem('hamsayehyar-reports', JSON.stringify(reports));
-  }, [reports]);
+    if (!supabase) return undefined;
+    let active = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (active) {
+        setSession(data.session);
+        setAuthLoading(false);
+      }
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      if (active) {
+        setSession(nextSession);
+        setAuthLoading(false);
+        if (!nextSession) setReports([]);
+      }
+    });
+    return () => {
+      active = false;
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!session?.user) return undefined;
+    let active = true;
+    setReportsLoading(true);
+    fetchReports()
+      .then((items) => active && setReports(items))
+      .catch((error) => active && setToast(`خطا در دریافت گزارش‌ها: ${error.message}`))
+      .finally(() => active && setReportsLoading(false));
+    return () => { active = false; };
+  }, [session?.user?.id]);
 
   useEffect(() => {
     if (!toast) return undefined;
-    const timer = window.setTimeout(() => setToast(''), 3200);
+    const timer = window.setTimeout(() => setToast(''), 4200);
     return () => window.clearTimeout(timer);
   }, [toast]);
 
@@ -148,11 +140,28 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const addReport = (report) => {
-    setReports((current) => [report, ...current]);
-    setToast('گزارش شما با موفقیت ثبت شد');
+  const addReport = async (report) => {
+    const savedReport = await createReport(report, session.user);
+    setReports((current) => [savedReport, ...current]);
+    setToast('گزارش شما با موفقیت و به‌صورت امن ثبت شد');
     setActivePage('reports');
+    return savedReport;
   };
+
+  const closeReport = async (id) => {
+    const updated = await updateReportStatus(id, 'resolved');
+    setReports((items) => items.map((report) => (report.id === id ? updated : report)));
+    setToast('گزارش به‌عنوان مختومه ثبت شد');
+  };
+
+  const signOut = async () => {
+    setProfileOpen(false);
+    const { error } = await supabase.auth.signOut();
+    if (error) setToast(`خروج انجام نشد: ${error.message}`);
+  };
+
+  if (authLoading) return <div className="app-loading" dir="rtl"><span className="loading-spinner" />در حال برقراری اتصال امن…</div>;
+  if (!session) return <AuthScreen />;
 
   return (
     <div className="app-shell" dir="rtl">
@@ -163,6 +172,9 @@ function App() {
         setProfileOpen={setProfileOpen}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
+        user={session.user}
+        reportsCount={reports.length}
+        onSignOut={signOut}
       />
 
       <main className="main-area">
@@ -185,7 +197,8 @@ function App() {
           {activePage === 'reports' && (
             <ReportsPage
               reports={reports}
-              setReports={setReports}
+              loading={reportsLoading}
+              closeReport={closeReport}
               openReport={() => setReportModalOpen(true)}
               showToast={setToast}
             />
@@ -232,7 +245,10 @@ function Brand({ compact = false }) {
   );
 }
 
-function Sidebar({ activePage, navigate, profileOpen, setProfileOpen, mobileMenuOpen, setMobileMenuOpen }) {
+function Sidebar({ activePage, navigate, profileOpen, setProfileOpen, mobileMenuOpen, setMobileMenuOpen, user, reportsCount, onSignOut }) {
+  const isGuest = user?.is_anonymous;
+  const displayName = user?.user_metadata?.full_name || (isGuest ? 'کاربر مهمان' : user?.email?.split('@')[0] || 'کاربر');
+  const avatar = displayName.slice(0, 2);
   return (
     <>
       {mobileMenuOpen && <button className="mobile-overlay" aria-label="بستن منو" onClick={() => setMobileMenuOpen(false)} />}
@@ -254,7 +270,7 @@ function Sidebar({ activePage, navigate, profileOpen, setProfileOpen, mobileMenu
               >
                 <Icon size={20} />
                 <span>{label}</span>
-                {id === 'reports' && <span className="nav-count">۳</span>}
+                {id === 'reports' && <span className="nav-count">{toPersianDigits(reportsCount)}</span>}
               </button>
             ))}
           </nav>
@@ -275,17 +291,17 @@ function Sidebar({ activePage, navigate, profileOpen, setProfileOpen, mobileMenu
           </button>
           <div className="profile-wrap">
             <button className="profile-button" onClick={() => setProfileOpen((v) => !v)} aria-expanded={profileOpen}>
-              <span className="avatar">س‌م</span>
+              <span className="avatar">{avatar}</span>
               <span className="profile-copy">
-                <strong>سارا محمدی</strong>
-                <small>ساختمان سرو</small>
+                <strong>{displayName}</strong>
+                <small>{isGuest ? 'حساب ناشناس' : user?.email}</small>
               </span>
               <ChevronUp size={17} className={profileOpen ? '' : 'flipped'} />
             </button>
             {profileOpen && (
               <div className="profile-menu">
                 <button onClick={() => navigate('settings')}><UserRound size={17} /> حساب کاربری</button>
-                <button onClick={() => setProfileOpen(false)}><LogOut size={17} /> خروج از حساب</button>
+                <button onClick={onSignOut}><LogOut size={17} /> خروج از حساب</button>
               </div>
             )}
           </div>
@@ -468,19 +484,26 @@ function ReportRow({ report, onClick, expanded = false, onToggle }) {
   );
 }
 
-function ReportsPage({ reports, setReports, openReport, showToast }) {
+function ReportsPage({ reports, loading, closeReport, openReport, showToast }) {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [expandedId, setExpandedId] = useState(reports[0]?.id || null);
+  const [closingId, setClosingId] = useState(null);
   const filtered = reports.filter((report) => {
     const matchesFilter = filter === 'all' || report.status === filter;
     const matchesSearch = !search || `${report.title} ${report.id} ${report.place}`.includes(search);
     return matchesFilter && matchesSearch;
   });
 
-  const closeReport = (id) => {
-    setReports((items) => items.map((r) => (r.id === id ? { ...r, status: 'resolved' } : r)));
-    showToast('گزارش به‌عنوان مختومه ثبت شد');
+  const handleCloseReport = async (id) => {
+    setClosingId(id);
+    try {
+      await closeReport(id);
+    } catch (error) {
+      showToast(`تغییر وضعیت انجام نشد: ${error.message}`);
+    } finally {
+      setClosingId(null);
+    }
   };
 
   return (
@@ -503,13 +526,15 @@ function ReportsPage({ reports, setReports, openReport, showToast }) {
       <section className="panel reports-container">
         <div className="reports-count"><strong>{toPersianDigits(filtered.length)} گزارش</strong><span>مرتب‌سازی: جدیدترین</span></div>
         <div className="report-list full-list">
-          {filtered.length ? filtered.map((report) => (
+          {loading ? (
+            <div className="empty-state"><span className="loading-spinner" /><h3>در حال دریافت گزارش‌ها</h3><p>اطلاعات مستقیماً از Supabase خوانده می‌شود.</p></div>
+          ) : filtered.length ? filtered.map((report) => (
             <div key={report.id}>
               <ReportRow report={report} expanded={expandedId === report.id} onToggle={() => setExpandedId((id) => id === report.id ? null : report.id)} />
               {expandedId === report.id && report.status !== 'resolved' && (
                 <div className="report-actions-inline">
                   <button className="outline-btn" onClick={() => showToast('پیام شما برای پشتیبانی ارسال شد')}><MessageCircleMore size={16} /> ارسال پیام</button>
-                  <button className="quiet-btn" onClick={() => closeReport(report.id)}><CheckCircle2 size={16} /> مشکل برطرف شده</button>
+                  <button className="quiet-btn" disabled={closingId === report.id} onClick={() => handleCloseReport(report.id)}><CheckCircle2 size={16} /> {closingId === report.id ? 'در حال ذخیره…' : 'مشکل برطرف شده'}</button>
                 </div>
               )}
             </div>
@@ -616,8 +641,10 @@ function ReportWizard({ onClose, onSubmit }) {
   const [time, setTime] = useState('');
   const [severity, setSeverity] = useState('medium');
   const [anonymous, setAnonymous] = useState(true);
-  const [uploaded, setUploaded] = useState(false);
+  const [evidenceFile, setEvidenceFile] = useState(null);
   const [submittedId, setSubmittedId] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     const onKey = (event) => event.key === 'Escape' && onClose();
@@ -631,24 +658,29 @@ function ReportWizard({ onClose, onSubmit }) {
 
   const nextDisabled = step === 1 ? !selectedType : step === 2 ? !description.trim() || !place.trim() : false;
 
-  const submit = () => {
+  const submit = async () => {
     const selected = reportTypes.find((item) => item.id === selectedType) || reportTypes[4];
-    const id = `HY-${Math.floor(3000 + Math.random() * 6999)}`;
-    setSubmittedId(id);
-    onSubmit({
-      id,
-      type: selectedType,
-      title: selected.title,
-      date: date || 'امروز',
-      time: time || 'اکنون',
-      place,
-      status: 'reviewing',
-      description,
-      updates: 0,
-      anonymous,
-      severity,
-    });
-    setStep(4);
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const saved = await onSubmit({
+        type: selectedType,
+        title: selected.title,
+        date: date || null,
+        time: time || null,
+        place,
+        description,
+        anonymous,
+        severity,
+        evidenceFile,
+      });
+      setSubmittedId(`HY-${saved.id.slice(0, 8).toUpperCase()}`);
+      setStep(4);
+    } catch (error) {
+      setSubmitError(`ثبت گزارش انجام نشد: ${error.message}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -695,7 +727,7 @@ function ReportWizard({ onClose, onSubmit }) {
                 <label>تاریخ<div className="input-with-icon"><CalendarDays size={18} /><input value={date} onChange={(e) => setDate(e.target.value)} /></div></label>
                 <label>ساعت<div className="input-with-icon"><Clock3 size={18} /><input value={time} onChange={(e) => setTime(e.target.value)} placeholder="مثلاً ۲۳:۳۰" /></div></label>
                 <fieldset className="severity-field full-field"><legend>شدت مزاحمت</legend><div className="severity-options">{[['low', 'کم'], ['medium', 'متوسط'], ['high', 'زیاد']].map(([id, label]) => <button type="button" key={id} className={severity === id ? `active ${id}` : ''} onClick={() => setSeverity(id)}>{label}</button>)}</div></fieldset>
-                <div className="upload-box full-field"><input type="file" id="evidence" hidden onChange={() => setUploaded(true)} /><label htmlFor="evidence"><UploadCloud size={21} /><span><strong>{uploaded ? 'فایل انتخاب شد' : 'افزودن تصویر یا فایل صوتی'}</strong><small>{uploaded ? 'برای تغییر، دوباره انتخاب کنید' : 'حداکثر ۱۰ مگابایت (اختیاری)'}</small></span>{uploaded && <CheckCircle2 className="upload-check" size={20} />}</label></div>
+                <div className="upload-box full-field"><input type="file" id="evidence" hidden accept="image/*,audio/*,.pdf" onChange={(event) => setEvidenceFile(event.target.files?.[0] || null)} /><label htmlFor="evidence"><UploadCloud size={21} /><span><strong>{evidenceFile ? evidenceFile.name : 'افزودن تصویر، صدا یا PDF'}</strong><small>{evidenceFile ? 'فایل هنگام ثبت در فضای خصوصی آپلود می‌شود' : 'حداکثر ۱۰ مگابایت (اختیاری)'}</small></span>{evidenceFile && <CheckCircle2 className="upload-check" size={20} />}</label></div>
               </div>
             </div>
           )}
@@ -709,6 +741,7 @@ function ReportWizard({ onClose, onSubmit }) {
                 <div className="review-meta"><span><MapPin size={16} /><small>محل</small><strong>{place}</strong></span><span><CalendarDays size={16} /><small>زمان</small><strong>{date}، {time || 'زمان ثبت'}</strong></span></div>
               </div>
               <div className="anonymous-row"><div><span className="anonymous-icon"><LockKeyhole size={19} /></span><div><strong>ثبت به‌صورت ناشناس</strong><p>هویت و شماره واحد شما نمایش داده نشود.</p></div></div><button className={`toggle ${anonymous ? 'on' : ''}`} onClick={() => setAnonymous(!anonymous)}><span /></button></div>
+              {submitError && <div className="auth-alert error" role="alert">{submitError}</div>}
               <label className="confirm-check"><input type="checkbox" defaultChecked /><span><Check size={13} /></span><p>تأیید می‌کنم اطلاعات واردشده تا حد امکان دقیق و مطابق واقعیت است.</p></label>
             </div>
           )}
@@ -728,7 +761,7 @@ function ReportWizard({ onClose, onSubmit }) {
         {step < 4 && (
           <footer className="modal-footer">
             <button className="quiet-btn" onClick={step === 1 ? onClose : () => setStep(step - 1)}>{step === 1 ? 'انصراف' : <><ArrowRight size={17} /> مرحله قبل</>}</button>
-            <button className="primary-btn" disabled={nextDisabled} onClick={step === 3 ? submit : () => setStep(step + 1)}>{step === 3 ? <><Check size={18} /> ثبت نهایی گزارش</> : <>ادامه <ArrowLeft size={17} /></>}</button>
+            <button className="primary-btn" disabled={nextDisabled || submitting} onClick={step === 3 ? submit : () => setStep(step + 1)}>{step === 3 ? <><Check size={18} /> {submitting ? 'در حال آپلود و ثبت…' : 'ثبت نهایی گزارش'}</> : <>ادامه <ArrowLeft size={17} /></>}</button>
           </footer>
         )}
       </section>
