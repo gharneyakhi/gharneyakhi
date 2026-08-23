@@ -132,6 +132,10 @@ class NetBlockVpnService : VpnService() {
                 .addAddress(IPV6_ADDR, 128)
                 .addRoute("0.0.0.0", 0)
                 .addRoute("::", 0)
+                // Point DNS at the dummy TUN so blocked apps cannot resolve
+                // via the real resolver and leak. Queries are dropped too.
+                .addDnsServer(IPV4_ADDR)
+                .addDnsServer(IPV6_ADDR)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 builder.setMetered(false)

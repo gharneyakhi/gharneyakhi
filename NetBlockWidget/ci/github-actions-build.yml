@@ -1,0 +1,31 @@
+# Optional GitHub Actions workflow.
+# Copy to .github/workflows/build-netblock.yml if the repo token has the
+# `workflows` permission. This sandbox cannot push workflow files.
+name: Build NetBlock APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "NetBlockWidget/**"
+      - "!NetBlockWidget/dist/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      - name: Build
+        working-directory: NetBlockWidget
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:testDebugUnitTest assembleDebug assembleRelease --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: netblock-apks
+          path: NetBlockWidget/app/build/outputs/apk/**/*.apk
