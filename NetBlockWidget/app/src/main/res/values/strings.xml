@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NetBlock</string>
+    <string name="widget_name">NetBlock</string>
+    <string name="widget_description">Block internet for Instagram, Facebook, Telegram and WhatsApp.</string>
+    <string name="toggle_hint">ON = Block Internet</string>
+    <string name="not_installed_short">%1$s — Not installed</string>
+    <string name="notification_channel_name">VPN status</string>
+    <string name="notification_channel_desc">Shown while the local NetBlock firewall is running.</string>
+    <string name="notification_title">NetBlock is active</string>
+    <string name="notification_open">Open App</string>
+    <string name="notification_stop">Stop VPN</string>
+</resources>
