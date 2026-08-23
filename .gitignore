@@ -1,8 +1,13 @@
 node_modules/
-dist/
+/dist/
 .vite/
 *.log
 .DS_Store
 .env
 .env.*
 !.env.example
+NetBlockWidget/.gradle/
+NetBlockWidget/**/build/
+NetBlockWidget/local.properties
+NetBlockWidget/.idea/
+*.iml
