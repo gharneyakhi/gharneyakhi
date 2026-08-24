@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>میولند — کارت ویزیت پت شاپ</title>
+<style>
+  /* Vazirmatn (local, subsetted) */
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:400;
+    src:url(assets/fonts/vazirmatn-arabic-400-normal.woff2) format('woff2'); unicode-range:U+0600-06FF,U+0750-077F,U+0870-089F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF; }
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:400;
+    src:url(assets/fonts/vazirmatn-latin-400-normal.woff2) format('woff2'); unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2212; }
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:500;
+    src:url(assets/fonts/vazirmatn-arabic-500-normal.woff2) format('woff2'); unicode-range:U+0600-06FF,U+0750-077F,U+0870-089F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF; }
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:500;
+    src:url(assets/fonts/vazirmatn-latin-500-normal.woff2) format('woff2'); unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2212; }
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:700;
+    src:url(assets/fonts/vazirmatn-arabic-700-normal.woff2) format('woff2'); unicode-range:U+0600-06FF,U+0750-077F,U+0870-089F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF; }
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:700;
+    src:url(assets/fonts/vazirmatn-latin-700-normal.woff2) format('woff2'); unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2212; }
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:900;
+    src:url(assets/fonts/vazirmatn-arabic-900-normal.woff2) format('woff2'); unicode-range:U+0600-06FF,U+0750-077F,U+0870-089F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF; }
+  @font-face { font-family:'Vazirmatn'; font-style:normal; font-display:swap; font-weight:900;
+    src:url(assets/fonts/vazirmatn-latin-900-normal.woff2) format('woff2'); unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2212; }
+
+  :root {
+    --teal-950:#072A32; --teal-900:#0C444D; --teal-800:#0E4A52;
+    --amber:#EE9A3F; --amber-deep:#D97624;
+    --cream:#FBF3E2; --paper:#F1EBDD; --ink:#1A3E45;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family:'Vazirmatn', system-ui, sans-serif;
+    background:var(--paper);
+    background-image:radial-gradient(rgba(12,68,77,.05) 1.2px, transparent 1.2px);
+    background-size:26px 26px;
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .no-print { display:block; }
+  header.top {
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    max-width:1180px; margin:0 auto; padding:28px 24px 8px;
+  }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .brand img { width:56px; height:56px; filter:drop-shadow(0 3px 6px rgba(7,42,50,.25)); }
+  .brand h1 { font-size:26px; font-weight:900; color:var(--teal-900); letter-spacing:-.2px; }
+  .brand small { display:block; font-size:13px; font-weight:500; color:var(--amber-deep); margin-top:2px; }
+  .actions { display:flex; gap:10px; flex-wrap:wrap; }
+  .btn {
+    font-family:inherit; font-size:14.5px; font-weight:700; cursor:pointer;
+    padding:11px 20px; border-radius:999px; border:1.5px solid transparent;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(7,42,50,.18); }
+  .btn-primary { background:var(--teal-900); color:var(--cream); }
+  .btn-amber { background:var(--amber); color:#3B2308; }
+  .btn-ghost { background:transparent; color:var(--teal-900); border-color:rgba(12,68,77,.35); }
+
+  main { max-width:1180px; margin:0 auto; padding:18px 24px 60px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:36px; margin-top:26px; }
+  .card-block { text-align:center; }
+  .pill {
+    display:inline-block; font-size:13.5px; font-weight:700; color:var(--cream);
+    background:var(--teal-900); padding:7px 18px; border-radius:999px; margin-bottom:16px;
+  }
+  .pill.alt { background:var(--amber); color:#3B2308; }
+  .card-frame {
+    width:100%; max-width:640px; margin:0 auto;
+    border-radius:14px; overflow:hidden;
+    box-shadow:0 2px 4px rgba(7,42,50,.14), 0 18px 44px -12px rgba(7,42,50,.35);
+    background:#fff;
+  }
+  .card-frame svg { display:block; width:100%; height:auto; }
+  .note { font-size:13px; color:rgba(26,62,69,.62); margin-top:12px; }
+
+  .specs {
+    margin-top:44px; background:rgba(255,255,255,.55); border:1px solid rgba(12,68,77,.12);
+    border-radius:18px; padding:22px 26px; display:flex; flex-wrap:wrap; gap:18px 34px; align-items:center; justify-content:center;
+  }
+  .spec { display:flex; align-items:center; gap:10px; font-size:14px; font-weight:500; color:var(--ink); }
+  .dot { width:16px; height:16px; border-radius:50%; border:1px solid rgba(7,42,50,.15); }
+
+  footer { text-align:center; padding:26px; font-size:12.5px; color:rgba(26,62,69,.5); }
+
+  @media print {
+    .no-print { display:none !important; }
+    body { background:#fff; }
+    main { padding:0; max-width:none; }
+    .cards { display:block; gap:0; margin:0; }
+    .card-block { margin:0; }
+    .pill, .note { display:none !important; }
+    .card-frame {
+      width:85.6mm; height:54mm; max-width:none; margin:0 auto;
+      border-radius:0; box-shadow:none; background:none;
+      page-break-after:always; break-after:page;
+    }
+    .card-frame:last-child { page-break-after:auto; }
+    .card-frame svg { width:100%; height:100%; }
+    @page { size:85.6mm 54mm; margin:0; }
+  }
+</style>
+</head>
+<body>
+<header class="top no-print">
+  <div class="brand">
+    <img src="svg/logo.svg" alt="لوگو">
+    <div>
+      <h1>کارت ویزیت «میولند»</h1>
+      <small>پت شاپ — شهریار، خیابان ولیعصر</small>
+    </div>
+  </div>
+  <div class="actions">
+    <a class="btn btn-primary" href="print/miyoland-business-card.pdf" download>⬇ دانلود فایل چاپ (PDF)</a>
+    <button class="btn btn-amber" onclick="window.print()">🖨 چاپ / PDF از مرورگر</button>
+  </div>
+</header>
+
+<main>
+  <div class="cards">
+    <section class="card-block">
+      <span class="pill">رو اول (جلو)</span>
+      <div class="card-frame">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1712 1080">
+  <defs>
+    <linearGradient id="bgF-f" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#125A66"/>
+      <stop offset="0.55" stop-color="#0B424C"/>
+      <stop offset="1" stop-color="#072A32"/>
+    </linearGradient>
+    <radialGradient id="glowF-f" cx="0.5" cy="0.36" r="0.6">
+      <stop offset="0" stop-color="#FFF9EE" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#FFF9EE" stop-opacity="0"/>
+    </radialGradient>
+    <g id="paw-f">
+      <ellipse cx="0" cy="9" rx="8" ry="6.2"/>
+      <circle cx="-10.5" cy="-1.5" r="3.9"/>
+      <circle cx="-3.6" cy="-6.8" r="3.9"/>
+      <circle cx="3.6" cy="-6.8" r="3.9"/>
+      <circle cx="10.5" cy="-1.5" r="3.9"/>
+    </g>
+    <g id="dogBadge-f">
+      <circle cx="100" cy="100" r="97" fill="#FBF3E2"/>
+      <path d="M57 47 C 33 28, 10 42, 15 74 C 19 97, 37 108, 51 97 C 57 92, 60 80, 61 68 Z" fill="#E07F2A"/>
+      <path d="M143 47 C 167 28, 190 42, 185 74 C 181 97, 163 108, 149 97 C 143 92, 140 80, 139 68 Z" fill="#E07F2A"/>
+      <path d="M100 46 C 136 46 159 70 159 102 C 159 139 133 164 100 164 C 67 164 41 139 41 102 C 41 70 64 46 100 46 Z" fill="#0E4A52"/>
+      <ellipse cx="100" cy="130" rx="31" ry="23" fill="#FBF3E2"/>
+      <path d="M100 117 C 108 117 113 121.5 113 127 C 113 133.5 105.5 138.5 100 138.5 C 94.5 138.5 87 133.5 87 127 C 87 121.5 92 117 100 117 Z" fill="#0B3A41"/>
+      <path d="M100 138.5 C 100 145 95.5 149 89.5 148 M100 138.5 C 100 145 104.5 149 110.5 148" stroke="#0B3A41" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <circle cx="77" cy="100" r="6.6" fill="#FFF9EE"/>
+      <circle cx="123" cy="100" r="6.6" fill="#FFF9EE"/>
+      <circle cx="58" cy="117" r="4.6" fill="#F6C37E" opacity="0.9"/>
+      <circle cx="142" cy="117" r="4.6" fill="#F6C37E" opacity="0.9"/>
+      <path d="M55 145 Q 100 176 145 145" stroke="#E07F2A" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <circle cx="100" cy="166" r="9" fill="#F6C37E" stroke="#0B3A41" stroke-width="2.6"/>
+      <circle cx="100" cy="162.5" r="2" fill="#0B3A41"/>
+    </g>
+  </defs>
+
+  <!-- background -->
+  <rect width="1712" height="1080" fill="url(#bgF)"/>
+  <rect width="1712" height="1080" fill="url(#glowF)"/>
+
+  <!-- subtle paw scatter -->
+  <g fill="#FBF3E2" opacity="0.07">
+    <use xlink:href="#paw-f" transform="translate(128 168) scale(1.7) rotate(-18)"/>
+    <use xlink:href="#paw-f" transform="translate(318 96) scale(1.05) rotate(14)"/>
+    <use xlink:href="#paw-f" transform="translate(1592 152) scale(1.45) rotate(16)"/>
+    <use xlink:href="#paw-f" transform="translate(1428 92) scale(0.95) rotate(-10)"/>
+    <use xlink:href="#paw-f" transform="translate(96 952) scale(1.25) rotate(20)"/>
+    <use xlink:href="#paw-f" transform="translate(1624 936) scale(1.55) rotate(-14)"/>
+    <use xlink:href="#paw-f" transform="translate(1494 1020) scale(0.95) rotate(9)"/>
+    <use xlink:href="#paw-f" transform="translate(222 1024) scale(0.85) rotate(-7)"/>
+    <use xlink:href="#paw-f" transform="translate(856 74) scale(0.9) rotate(6)"/>
+  </g>
+  <g fill="#EE9A3F" opacity="0.22">
+    <use xlink:href="#paw-f" transform="translate(520 150) scale(0.7) rotate(-12)"/>
+    <use xlink:href="#paw-f" transform="translate(1210 148) scale(0.65) rotate(14)"/>
+  </g>
+
+  <!-- badge -->
+  <circle cx="856" cy="376" r="228" fill="none" stroke="#FBF3E2" stroke-opacity="0.16" stroke-width="3"/>
+  <use xlink:href="#dogBadge-f" transform="translate(856 376) scale(1.9) translate(-100 -100)"/>
+
+  <!-- wordmark -->
+  <text x="856" y="798" font-family="Vazirmatn" font-weight="900" font-size="152" fill="#FFF9EE" text-anchor="middle" direction="rtl">میولند</text>
+  <text x="856" y="872" font-family="Vazirmatn" font-weight="700" font-size="33" fill="#EE9A3F" text-anchor="middle" letter-spacing="19">MIYOLAND</text>
+
+  <!-- divider -->
+  <line x1="566" y1="934" x2="798" y2="934" stroke="#FBF3E2" stroke-opacity="0.45" stroke-width="2.5"/>
+  <line x1="914" y1="934" x2="1146" y2="934" stroke="#FBF3E2" stroke-opacity="0.45" stroke-width="2.5"/>
+  <use xlink:href="#paw-f" transform="translate(856 934) scale(1.15)" fill="#EE9A3F"/>
+
+  <!-- tagline -->
+  <text x="856" y="1006" font-family="Vazirmatn" font-weight="400" font-size="40" fill="#FBF3E2" fill-opacity="0.78" text-anchor="middle" direction="rtl">فروشگاه تخصصی لوازم و خدمات حیوانات خانگی</text>
+</svg>
+
+      </div>
+      <p class="note no-print">سایز استاندارد ۸۵٫۶ × ۵۴ میلی‌متر — آماده چاپ با رزولوشن ۳۵۰ DPI</p>
+    </section>
+    <section class="card-block">
+      <span class="pill alt">رو دوم (پشت)</span>
+      <div class="card-frame">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1712 1080">
+  <defs>
+    <g id="paw-b">
+      <ellipse cx="0" cy="9" rx="8" ry="6.2"/>
+      <circle cx="-10.5" cy="-1.5" r="3.9"/>
+      <circle cx="-3.6" cy="-6.8" r="3.9"/>
+      <circle cx="3.6" cy="-6.8" r="3.9"/>
+      <circle cx="10.5" cy="-1.5" r="3.9"/>
+    </g>
+    <g id="dogBadge-b">
+      <circle cx="100" cy="100" r="97" fill="#FBF3E2"/>
+      <path d="M57 47 C 33 28, 10 42, 15 74 C 19 97, 37 108, 51 97 C 57 92, 60 80, 61 68 Z" fill="#E07F2A"/>
+      <path d="M143 47 C 167 28, 190 42, 185 74 C 181 97, 163 108, 149 97 C 143 92, 140 80, 139 68 Z" fill="#E07F2A"/>
+      <path d="M100 46 C 136 46 159 70 159 102 C 159 139 133 164 100 164 C 67 164 41 139 41 102 C 41 70 64 46 100 46 Z" fill="#0E4A52"/>
+      <ellipse cx="100" cy="130" rx="31" ry="23" fill="#FBF3E2"/>
+      <path d="M100 117 C 108 117 113 121.5 113 127 C 113 133.5 105.5 138.5 100 138.5 C 94.5 138.5 87 133.5 87 127 C 87 121.5 92 117 100 117 Z" fill="#0B3A41"/>
+      <path d="M100 138.5 C 100 145 95.5 149 89.5 148 M100 138.5 C 100 145 104.5 149 110.5 148" stroke="#0B3A41" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <circle cx="77" cy="100" r="6.6" fill="#FFF9EE"/>
+      <circle cx="123" cy="100" r="6.6" fill="#FFF9EE"/>
+      <circle cx="58" cy="117" r="4.6" fill="#F6C37E" opacity="0.9"/>
+      <circle cx="142" cy="117" r="4.6" fill="#F6C37E" opacity="0.9"/>
+      <path d="M55 145 Q 100 176 145 145" stroke="#E07F2A" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <circle cx="100" cy="166" r="9" fill="#F6C37E" stroke="#0B3A41" stroke-width="2.6"/>
+      <circle cx="100" cy="162.5" r="2" fill="#0B3A41"/>
+    </g>
+    <g id="icPin-b" fill="none" stroke="#FBF3E2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </g>
+    <g id="icPhone-b" fill="none" stroke="#FBF3E2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </g>
+    <g id="icInsta-b" fill="none" stroke="#FBF3E2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
+      <circle cx="12" cy="12" r="4.1"/>
+      <circle cx="17.2" cy="6.8" r="1.15" fill="#FBF3E2" stroke="none"/>
+    </g>
+  </defs>
+
+  <!-- background -->
+  <rect width="1712" height="1080" fill="#F8F1E0"/>
+  <rect width="1712" height="14" fill="#EE9A3F"/>
+
+  <!-- top-left decoration -->
+  <g fill="#0C444D">
+    <use xlink:href="#paw-b" transform="translate(168 196) scale(1.5) rotate(-14)" opacity="0.10"/>
+    <use xlink:href="#paw-b" transform="translate(338 122) scale(0.95) rotate(12)" opacity="0.09"/>
+    <use xlink:href="#paw-b" transform="translate(452 214) scale(0.6) rotate(-8)" opacity="0.07"/>
+  </g>
+  <circle cx="92" cy="868" r="168" fill="none" stroke="#0C444D" stroke-opacity="0.055" stroke-width="26"/>
+
+  <!-- header: badge + name (RTL: right side) -->
+  <use xlink:href="#dogBadge-b" transform="translate(1472 212) scale(1.5) translate(-100 -100)"/>
+  <text x="1282" y="240" font-family="Vazirmatn" font-weight="900" font-size="100" fill="#0C444D" text-anchor="start" direction="rtl">میولند</text>
+  <text x="1282" y="324" font-family="Vazirmatn" font-weight="700" font-size="42" fill="#D97624" text-anchor="start" direction="rtl" letter-spacing="3">پت شاپ</text>
+
+  <!-- divider -->
+  <line x1="130" y1="424" x2="1282" y2="424" stroke="#0C444D" stroke-opacity="0.14" stroke-width="2.5"/>
+  <line x1="1102" y1="424" x2="1282" y2="424" stroke="#EE9A3F" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- contact rows (RTL, right-aligned) -->
+  <g>
+    <!-- address -->
+    <circle cx="1522" cy="572" r="42" fill="#0C444D"/>
+    <use xlink:href="#icPin-b" transform="translate(1489.6 539.6) scale(2.7)"/>
+    <text x="1448" y="545" font-family="Vazirmatn" font-weight="700" font-size="34" fill="#D97624" text-anchor="start" direction="rtl">آدرس</text>
+    <text x="1448" y="606" font-family="Vazirmatn" font-weight="500" font-size="47" fill="#1A3E45" text-anchor="start" direction="rtl">شهریار، خیابان ولیعصر، نبش کوچه احمد</text>
+
+    <!-- phone -->
+    <circle cx="1522" cy="713" r="42" fill="#0C444D"/>
+    <use xlink:href="#icPhone-b" transform="translate(1489.6 680.6) scale(2.7)"/>
+    <text x="1448" y="686" font-family="Vazirmatn" font-weight="700" font-size="34" fill="#D97624" text-anchor="start" direction="rtl">تلفن</text>
+    <text x="1448" y="747" font-family="Vazirmatn" font-weight="600" font-size="47" fill="#1A3E45" text-anchor="end" direction="ltr">0910 933 9859</text>
+
+    <!-- instagram -->
+    <circle cx="1522" cy="854" r="42" fill="#0C444D"/>
+    <use xlink:href="#icInsta-b" transform="translate(1489.6 821.6) scale(2.7)"/>
+    <text x="1448" y="827" font-family="Vazirmatn" font-weight="700" font-size="34" fill="#D97624" text-anchor="start" direction="rtl">اینستاگرام</text>
+    <text x="1448" y="888" font-family="Vazirmatn" font-weight="600" font-size="47" fill="#1A3E45" text-anchor="end" direction="ltr">@miyoland</text>
+  </g>
+
+  <!-- bottom strip -->
+  <rect y="942" width="1712" height="138" fill="#0C444D"/>
+  <use xlink:href="#paw-b" transform="translate(520 1011) scale(1.0)" fill="#EE9A3F" opacity="0.9"/>
+  <use xlink:href="#paw-b" transform="translate(1192 1011) scale(1.0)" fill="#EE9A3F" opacity="0.9"/>
+  <text x="856" y="1026" font-family="Vazirmatn" font-weight="500" font-size="37" fill="#FBF3E2" fill-opacity="0.85" text-anchor="middle" direction="rtl">لبخندِ کوچک‌ترین اعضای خانواده</text>
+</svg>
+
+      </div>
+      <p class="note no-print">اطلاعات تماس، آدرس و اینستاگرام</p>
+    </section>
+  </div>
+
+  <div class="specs no-print">
+    <span class="spec"><span class="dot" style="background:#0C444D"></span>سبز یاسی #0C444D</span>
+    <span class="spec"><span class="dot" style="background:#EE9A3F"></span>نارنجی #EE9A3F</span>
+    <span class="spec"><span class="dot" style="background:#FBF3E2"></span>کرم #FBF3E2</span>
+    <span class="spec">فونت: وزیرمتن</span>
+    <span class="spec">لوگو: SVG برداری (svg/logo.svg)</span>
+  </div>
+</main>
+
+<footer class="no-print">طراحی برای پت شاپ میولند · MIYOLAND Pet Shop</footer>
+</body>
+</html>
