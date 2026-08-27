@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<line x1="332.83" y1="180.00" x2="415.20" y2="180.00" stroke="#0088CC" stroke-width="6.24" stroke-linecap="round"/>
+<line x1="374.40" y1="180.00" x2="399.86" y2="205.46" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<line x1="374.40" y1="180.00" x2="399.86" y2="154.54" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<circle cx="415.20" cy="180.00" r="9.00" fill="#0088CC"/>
+<circle cx="415.20" cy="180.00" r="4.05" fill="#0088CC"/>
+<line x1="316.42" y1="208.43" x2="357.60" y2="279.77" stroke="#0088CC" stroke-width="6.24" stroke-linecap="round"/>
+<line x1="337.20" y1="244.43" x2="327.88" y2="279.21" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<line x1="337.20" y1="244.43" x2="371.97" y2="253.75" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<circle cx="357.60" cy="279.77" r="9.00" fill="#0088CC"/>
+<circle cx="357.60" cy="279.77" r="4.05" fill="#0088CC"/>
+<line x1="283.58" y1="208.43" x2="242.40" y2="279.77" stroke="#0088CC" stroke-width="6.24" stroke-linecap="round"/>
+<line x1="262.80" y1="244.43" x2="228.03" y2="253.75" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<line x1="262.80" y1="244.43" x2="272.12" y2="279.21" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<circle cx="242.40" cy="279.77" r="9.00" fill="#0088CC"/>
+<circle cx="242.40" cy="279.77" r="4.05" fill="#0088CC"/>
+<line x1="267.17" y1="180.00" x2="184.80" y2="180.00" stroke="#0088CC" stroke-width="6.24" stroke-linecap="round"/>
+<line x1="225.60" y1="180.00" x2="200.14" y2="154.54" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<line x1="225.60" y1="180.00" x2="200.14" y2="205.46" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<circle cx="184.80" cy="180.00" r="9.00" fill="#0088CC"/>
+<circle cx="184.80" cy="180.00" r="4.05" fill="#0088CC"/>
+<line x1="283.58" y1="151.57" x2="242.40" y2="80.23" stroke="#0088CC" stroke-width="6.24" stroke-linecap="round"/>
+<line x1="262.80" y1="115.57" x2="272.12" y2="80.79" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<line x1="262.80" y1="115.57" x2="228.03" y2="106.25" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<circle cx="242.40" cy="80.23" r="9.00" fill="#0088CC"/>
+<circle cx="242.40" cy="80.23" r="4.05" fill="#0088CC"/>
+<line x1="316.42" y1="151.57" x2="357.60" y2="80.23" stroke="#0088CC" stroke-width="6.24" stroke-linecap="round"/>
+<line x1="337.20" y1="115.57" x2="371.97" y2="106.25" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<line x1="337.20" y1="115.57" x2="327.88" y2="80.79" stroke="#006699" stroke-width="4.80" stroke-linecap="round"/>
+<circle cx="357.60" cy="80.23" r="9.00" fill="#0088CC"/>
+<circle cx="357.60" cy="80.23" r="4.05" fill="#0088CC"/>
+<polygon points="374.40,180.00 337.20,244.43 262.80,244.43 225.60,180.00 262.80,115.57 337.20,115.57" fill="none" stroke="#0088CC" stroke-width="2.40" stroke-dasharray="4 4" opacity="0.5"/>
+<polygon points="300.00,134.40 345.60,180.00 300.00,225.60 254.40,180.00" fill="#FFFFFF" stroke="#0088CC" stroke-width="6.60"/>
+<polygon points="300.00,148.08 331.92,180.00 300.00,211.92 268.08,180.00" fill="none" stroke="#006699" stroke-width="3.60"/>
+<polygon points="300.00,162.67 317.33,180.00 300.00,197.33 282.67,180.00" fill="#0088CC"/>
+<text x="300" y="360" text-anchor="middle" font-family="'Montserrat', sans-serif" font-weight="900" font-size="38" fill="#0A192F" letter-spacing="2">GHARNE YAKHI</text>
+<text x="300" y="405" text-anchor="middle" font-family="'Montserrat', sans-serif" font-weight="700" font-size="16" fill="#0088CC" letter-spacing="3">COMPUTERS &amp; TECH SOLUTIONS</text>
+<text x="300" y="455" text-anchor="middle" font-family="'Vazirmatn', sans-serif" font-weight="700" font-size="22" fill="#334155">مرکز تخصصی کامپیوتر قرن یخی</text>
+</svg>
