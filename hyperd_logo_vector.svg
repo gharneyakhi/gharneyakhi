@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080B10" />
+      <stop offset="50%" stop-color="#0D131D" />
+      <stop offset="100%" stop-color="#06090E" />
+    </linearGradient>
+
+    <!-- Metallic Gradients -->
+    <linearGradient id="metalTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="40%" stop-color="#CBD5E1" />
+      <stop offset="100%" stop-color="#64748B" />
+    </linearGradient>
+
+    <linearGradient id="metalPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2E8F0" />
+      <stop offset="50%" stop-color="#94A3B8" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+
+    <linearGradient id="metalEdge" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+
+    <!-- Cyan Energy Gradients -->
+    <linearGradient id="cyanCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#00F2FE" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <linearGradient id="cyanGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="cyanTextGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#00F2FE" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <!-- Wafer Base Gradients -->
+    <radialGradient id="waferBase" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="70%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.6" />
+    </radialGradient>
+
+    <!-- Glow Filter -->
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="subtleShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Dark Luxury Background -->
+  <rect width="1200" height="800" fill="url(#bgDark)"/>
+
+  <!-- Subtle Circular Ambient Backlight -->
+  <circle cx="600" cy="280" r="240" fill="#00F2FE" opacity="0.04" filter="blur(60px)" />
+  <circle cx="600" cy="280" r="160" fill="#0284C7" opacity="0.06" filter="blur(40px)" />
+
+  <!-- ==================== ICON GROUP ==================== -->
+  <g transform="translate(600, 260)" filter="url(#subtleShadow)" text-anchor="middle">
+
+    <!-- 1. BASE WAFER DISK (Bottom Ellipse) -->
+    <!-- Outer Rim -->
+    <ellipse cx="0" cy="115" rx="190" ry="60" fill="none" stroke="url(#metalPlate)" stroke-width="3" opacity="0.7"/>
+    <ellipse cx="0" cy="118" rx="192" ry="61" fill="none" stroke="#00F2FE" stroke-width="1.5" opacity="0.4" filter="url(#neonGlow)"/>
+
+    <!-- Disk Surface -->
+    <ellipse cx="0" cy="110" rx="180" ry="55" fill="url(#waferBase)" stroke="#334155" stroke-width="1.5"/>
+
+    <!-- Silicon Grid Lines on Wafer (Circuit Pattern) -->
+    <g opacity="0.35" stroke="#38BDF8" stroke-width="0.8">
+      <!-- Horizontal elliptical grid -->
+      <ellipse cx="0" cy="110" rx="140" ry="42" fill="none"/>
+      <ellipse cx="0" cy="110" rx="100" ry="30" fill="none"/>
+      <ellipse cx="0" cy="110" rx="60" ry="18" fill="none"/>
+      <!-- Radial cuts / Die division lines -->
+      <line x1="-160" y1="110" x2="160" y2="110"/>
+      <line x1="-120" y1="92" x2="120" y2="128"/>
+      <line x1="-120" y1="128" x2="120" y2="92"/>
+      <line x1="0" y1="55" x2="0" y2="165"/>
+      <line x1="-80" y1="65" x2="-80" y2="155"/>
+      <line x1="80" y1="65" x2="80" y2="155"/>
+    </g>
+
+    <!-- Glowing Rim Edge -->
+    <path d="M -180,110 A 180,55 0 0,0 180,110 L 180,118 A 180,55 0 0,1 -180,118 Z" fill="url(#metalEdge)"/>
+    <path d="M -170,116 A 170,52 0 0,0 170,116" fill="none" stroke="#00F2FE" stroke-width="2" opacity="0.8"/>
+
+    <!-- 2. LAYER 1: BASE SUBSTRATE CHIPLET (Lower Plate) -->
+    <!-- Extrusion / Thickness -->
+    <polygon points="-90,65 0,105 90,65 90,75 0,115 -90,75" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+    <!-- Top Face -->
+    <polygon points="0,25 90,65 0,105 -90,65" fill="#1E293B" stroke="url(#metalPlate)" stroke-width="2"/>
+    <!-- Micro-BGA Contact Dots on Layer 1 -->
+    <g fill="#94A3B8" opacity="0.6">
+      <circle cx="-35" cy="55" r="2"/>
+      <circle cx="-15" cy="47" r="2"/>
+      <circle cx="5" cy="39" r="2"/>
+      <circle cx="-15" cy="65" r="2"/>
+      <circle cx="5" cy="57" r="2"/>
+      <circle cx="25" cy="49" r="2"/>
+      <circle cx="5" cy="75" r="2"/>
+      <circle cx="25" cy="67" r="2"/>
+      <circle cx="45" cy="59" r="2"/>
+    </g>
+
+    <!-- Energy Connection Beams between Layer 1 & 2 -->
+    <line x1="-70" y1="35" x2="-70" y2="-10" stroke="#00F2FE" stroke-width="1.5" opacity="0.7" filter="url(#neonGlow)"/>
+    <line x1="70" y1="35" x2="70" y2="-10" stroke="#00F2FE" stroke-width="1.5" opacity="0.7" filter="url(#neonGlow)"/>
+    <line x1="0" y1="70" x2="0" y2="20" stroke="#00F2FE" stroke-width="2" opacity="0.9" filter="url(#neonGlow)"/>
+
+    <!-- 3. LAYER 2: INTERPOSER & LOGIC CHIPLET (Middle Plate - Glowing Cyan Energy) -->
+    <!-- Extrusion / Thickness -->
+    <polygon points="-75,10 0,45 75,10 75,18 0,53 -75,18" fill="#0369A1" stroke="#0284C7" stroke-width="1"/>
+    <!-- Top Face (Vibrant Glowing Cyan Matrix) -->
+    <polygon points="0,-25 75,10 0,45 -75,10" fill="url(#cyanCore)" stroke="#E0F2FE" stroke-width="2" filter="url(#neonGlow)"/>
+    <!-- Inner Etching on Middle Die -->
+    <polygon points="0,-15 55,10 0,35 -55,10" fill="#0284C7" opacity="0.7"/>
+    <!-- Circuit Pattern on Middle Plate -->
+    <polyline points="-35,1 -5,-13 25,1" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.9"/>
+    <polyline points="-25,12 0,0 25,12" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- 4. LAYER 3: TOP SILICON COMPUTING DIE (Apex Plate) -->
+    <!-- Extrusion / Thickness -->
+    <polygon points="-55,-40 0,-15 55,-40 55,-32 0,-7 -55,-32" fill="#334155" stroke="#475569" stroke-width="1"/>
+    <!-- Top Face (Brushed Titanium / Monolith Finish) -->
+    <polygon points="0,-65 55,-40 0,-15 -55,-40" fill="url(#metalTop)" stroke="#FFFFFF" stroke-width="2.5"/>
+    <!-- Center Micro-Core Die on Top Plate -->
+    <polygon points="0,-52 32,-38 0,-24 -32,-38" fill="#0F172A" stroke="#00F2FE" stroke-width="1.5"/>
+    <polygon points="0,-46 18,-38 0,-30 -18,-38" fill="#00F2FE" opacity="0.9" filter="url(#neonGlow)"/>
+
+    <!-- Top Laser Apex Node Indicator -->
+    <line x1="0" y1="-65" x2="0" y2="-90" stroke="#00F2FE" stroke-width="2" stroke-linecap="round" filter="url(#neonGlow)"/>
+    <circle cx="0" cy="-90" r="3.5" fill="#FFFFFF" filter="url(#neonGlow)"/>
+  </g>
+
+  <!-- ==================== TYPOGRAPHY SECTION ==================== -->
+  <g transform="translate(600, 560)">
+    <!-- Main Brand Name: HYPERD -->
+    <text x="0" y="0" text-anchor="middle" font-family="'Space Grotesk', 'Orbitron', 'Montserrat', -apple-system, sans-serif" font-size="76" font-weight="900" letter-spacing="16" fill="#FFFFFF">
+      H Y P E R<tspan fill="url(#cyanTextGrad)">D</tspan>
+    </text>
+
+    <!-- Sub-Slogan / Category Definition -->
+    <g transform="translate(0, 50)">
+      <!-- Left Accent Line -->
+      <line x1="-360" y1="-6" x2="-190" y2="-6" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="-185" cy="-6" r="3" fill="#00F2FE"/>
+
+      <!-- Category Text -->
+      <text x="0" y="0" text-anchor="middle" font-family="'Inter', 'Roboto', sans-serif" font-size="16" font-weight="600" letter-spacing="8" fill="#94A3B8">
+        HIGH-PERFORMANCE COMPUTING
+      </text>
+
+      <!-- Right Accent Line -->
+      <circle cx="185" cy="-6" r="3" fill="#00F2FE"/>
+      <line x1="190" y1="-6" x2="360" y2="-6" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Secondary Meta Description (Store Identity) -->
+    <text x="0" y="90" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-weight="400" letter-spacing="4" fill="#64748B">
+      COMPUTERS • WORKSTATIONS • HARDWARE ARCHITECTURE
+    </text>
+  </g>
+
+  <!-- ==================== DECORATIVE CORNER MARKS ==================== -->
+  <g stroke="#334155" stroke-width="1.5" fill="none" opacity="0.6">
+    <!-- Top-Left -->
+    <path d="M 40,60 L 40,40 L 60,40"/>
+    <!-- Top-Right -->
+    <path d="M 1160,60 L 1160,40 L 1140,40"/>
+    <!-- Bottom-Left -->
+    <path d="M 40,740 L 40,760 L 60,760"/>
+    <!-- Bottom-Right -->
+    <path d="M 1160,740 L 1160,760 L 1140,760"/>
+  </g>
+
+  <!-- Top Status Badge -->
+  <text x="60" y="55" font-family="'Space Grotesk', monospace" font-size="11" font-weight="500" letter-spacing="2" fill="#64748B">
+    CONCEPT 05 // SILICON WAFER FLOATING CHIPLET
+  </text>
+  <text x="1140" y="55" text-anchor="end" font-family="'Space Grotesk', monospace" font-size="11" font-weight="500" letter-spacing="2" fill="#00F2FE">
+    OFFICIAL BRAND IDENTITY
+  </text>
+</svg>

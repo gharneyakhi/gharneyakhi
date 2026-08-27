@@ -1,0 +1,263 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <defs>
+    <!-- Background -->
+    <radialGradient id="bgGlow" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#111827" />
+      <stop offset="60%" stop-color="#080C14" />
+      <stop offset="100%" stop-color="#030712" />
+    </radialGradient>
+
+    <!-- Metallic Steel Gradients -->
+    <linearGradient id="metalRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2E8F0" />
+      <stop offset="30%" stop-color="#94A3B8" />
+      <stop offset="70%" stop-color="#475569" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+
+    <linearGradient id="chipletTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569" />
+      <stop offset="50%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+
+    <linearGradient id="chipletEdgeLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+
+    <linearGradient id="chipletEdgeRight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <!-- Glowing Cyan Plate -->
+    <linearGradient id="cyanPlateGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.85" />
+      <stop offset="50%" stop-color="#00F2FE" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.8" />
+    </linearGradient>
+
+    <linearGradient id="cyanEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="100%" stop-color="#0369A1" />
+    </linearGradient>
+
+    <!-- Chrome Text Gradient -->
+    <linearGradient id="chromeText" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="45%" stop-color="#E2E8F0" />
+      <stop offset="55%" stop-color="#94A3B8" />
+      <stop offset="100%" stop-color="#CBD5E1" />
+    </linearGradient>
+
+    <!-- Cyan D Text Gradient -->
+    <linearGradient id="cyanDText" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#00F2FE" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="laserGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur1"/>
+      <feGaussianBlur stdDeviation="20" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="15" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="heavyDrop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="25" stdDeviation="25" flood-color="#000000" flood-opacity="0.85"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="1000" fill="url(#bgGlow)"/>
+
+  <!-- Subtle Cyan Ambient Floor Flare -->
+  <ellipse cx="500" cy="510" rx="360" ry="140" fill="#00F2FE" opacity="0.06" filter="url(#laserGlow)"/>
+
+  <!-- ================= MASTER ICON ================= -->
+  <g id="chiplet-icon" filter="url(#heavyDrop)">
+
+    <!-- TIER 1: CIRCULAR SILICON WAFER BASE (Bottom Disk) -->
+    <!-- Wafer Outer Metal Rim Cylinder -->
+    <g id="wafer-base">
+      <!-- Cylinder side edge -->
+      <path d="M 230,510 A 270,110 0 0,0 770,510 L 770,535 A 270,110 0 0,1 230,535 Z" fill="url(#metalRim)"/>
+      <path d="M 230,535 A 270,110 0 0,0 770,535" fill="none" stroke="#00F2FE" stroke-width="1.5" opacity="0.5" filter="url(#laserGlow)"/>
+      
+      <!-- Top Face of Wafer -->
+      <ellipse cx="500" cy="505" rx="270" ry="105" fill="#0A0F1D" stroke="url(#metalRim)" stroke-width="3.5"/>
+      <ellipse cx="500" cy="505" rx="265" ry="102" fill="none" stroke="#0284C7" stroke-width="1.5" opacity="0.6"/>
+
+      <!-- Silicon Wafer Micro-Grid & Circuit Pathways -->
+      <g id="wafer-circuitry" opacity="0.65">
+        <!-- Concentric Circuit Tracks -->
+        <ellipse cx="500" cy="505" rx="220" ry="85" fill="none" stroke="#0284C7" stroke-width="1.2" stroke-dasharray="12 4 4 4"/>
+        <ellipse cx="500" cy="505" rx="170" ry="65" fill="none" stroke="#38BDF8" stroke-width="1.5"/>
+        <ellipse cx="500" cy="505" rx="120" ry="46" fill="none" stroke="#00F2FE" stroke-width="1" stroke-dasharray="8 6"/>
+
+        <!-- Grid Lines / Wafer Dice Lines -->
+        <path d="M 260,505 L 740,505 M 300,470 L 700,470 M 300,540 L 700,540 M 350,440 L 650,440 M 350,570 L 650,570" stroke="#0369A1" stroke-width="0.8" opacity="0.5"/>
+        <path d="M 500,400 L 500,610 M 440,410 L 440,600 M 560,410 L 560,600 M 380,430 L 380,580 M 620,430 L 620,580" stroke="#0369A1" stroke-width="0.8" opacity="0.5"/>
+
+        <!-- Glowing Circuit Traces in Perspective -->
+        <polygon points="500,430 670,495 500,560 330,495" fill="none" stroke="#00F2FE" stroke-width="2" filter="url(#laserGlow)"/>
+        <polygon points="500,445 640,495 500,545 360,495" fill="none" stroke="#38BDF8" stroke-width="1.2"/>
+
+        <!-- Micro-pins around center -->
+        <circle cx="370" cy="495" r="2.5" fill="#00F2FE" filter="url(#laserGlow)"/>
+        <circle cx="630" cy="495" r="2.5" fill="#00F2FE" filter="url(#laserGlow)"/>
+        <circle cx="500" cy="445" r="2.5" fill="#00F2FE" filter="url(#laserGlow)"/>
+        <circle cx="500" cy="545" r="2.5" fill="#00F2FE" filter="url(#laserGlow)"/>
+      </g>
+    </g>
+
+    <!-- TIER 2: FLOATING TRANSLUCENT CYAN INTERPOSER PLATE (Middle Layer) -->
+    <g id="cyan-floating-interposer">
+      <!-- Vertical Edge Thickness (Extrusion) -->
+      <!-- Left Edge -->
+      <polygon points="280,360 500,445 500,470 280,385" fill="url(#cyanEdge)" opacity="0.85"/>
+      <!-- Right Edge -->
+      <polygon points="500,445 720,360 720,385 500,470" fill="#0369A1" opacity="0.95"/>
+      <!-- Glowing Bevel Edges -->
+      <polyline points="280,385 500,470 720,385" fill="none" stroke="#00F2FE" stroke-width="3" filter="url(#laserGlow)"/>
+
+      <!-- Top Face of Cyan Plate -->
+      <polygon points="500,275 720,360 500,445 280,360" fill="url(#cyanPlateGrad)" stroke="#E0F2FE" stroke-width="2.5" filter="url(#laserGlow)"/>
+
+      <!-- Inner Micro-Interconnect Matrix on Cyan Plate -->
+      <polygon points="500,295 680,360 500,425 320,360" fill="#0284C7" fill-opacity="0.35" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="6 4"/>
+
+      <!-- Micro BGA Dots on Cyan Interposer -->
+      <g fill="#FFFFFF" opacity="0.75">
+        <circle cx="430" cy="350" r="2.5"/>
+        <circle cx="465" cy="337" r="2.5"/>
+        <circle cx="500" cy="324" r="2.5"/>
+        <circle cx="535" cy="337" r="2.5"/>
+        <circle cx="570" cy="350" r="2.5"/>
+
+        <circle cx="465" cy="377" r="2.5"/>
+        <circle cx="500" cy="364" r="2.5"/>
+        <circle cx="535" cy="377" r="2.5"/>
+
+        <circle cx="500" cy="404" r="2.5"/>
+      </g>
+    </g>
+
+    <!-- TIER 3: FLOATING 2x2 CHIPLET TILES (Top Layer - 4 Dark Titanium Dies) -->
+    <g id="top-chiplets">
+      
+      <!-- CHIPLET 1: TOP-NORTH (Apex Die) -->
+      <g id="chiplet-north">
+        <!-- Thickness -->
+        <polygon points="410,210 500,245 500,265 410,230" fill="url(#chipletEdgeLeft)"/>
+        <polygon points="500,245 590,210 590,230 500,265" fill="url(#chipletEdgeRight)"/>
+        <!-- Top Face -->
+        <polygon points="500,175 590,210 500,245 410,210" fill="url(#chipletTop)" stroke="#94A3B8" stroke-width="1.8"/>
+        <!-- Brushed Texture Lines -->
+        <line x1="440" y1="210" x2="530" y2="245" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+        <line x1="470" y1="198" x2="560" y2="233" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+      </g>
+
+      <!-- CHIPLET 2: WEST DIE (Left) -->
+      <g id="chiplet-west">
+        <!-- Thickness -->
+        <polygon points="305,250 395,285 395,305 305,270" fill="url(#chipletEdgeLeft)"/>
+        <polygon points="395,285 485,250 485,270 395,305" fill="url(#chipletEdgeRight)"/>
+        <!-- Top Face -->
+        <polygon points="395,215 485,250 395,285 305,250" fill="url(#chipletTop)" stroke="#94A3B8" stroke-width="1.8"/>
+        <!-- Brushed Texture Lines -->
+        <line x1="335" y1="250" x2="425" y2="285" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+        <line x1="365" y1="238" x2="455" y2="273" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+      </g>
+
+      <!-- CHIPLET 3: EAST DIE (Right) -->
+      <g id="chiplet-east">
+        <!-- Thickness -->
+        <polygon points="515,250 605,285 605,305 515,270" fill="url(#chipletEdgeLeft)"/>
+        <polygon points="605,285 695,250 695,270 605,305" fill="url(#chipletEdgeRight)"/>
+        <!-- Top Face -->
+        <polygon points="605,215 695,250 605,285 515,250" fill="url(#chipletTop)" stroke="#94A3B8" stroke-width="1.8"/>
+        <!-- Brushed Texture Lines -->
+        <line x1="545" y1="250" x2="635" y2="285" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+        <line x1="575" y1="238" x2="665" y2="273" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+      </g>
+
+      <!-- CHIPLET 4: SOUTH DIE (Center-Front) -->
+      <g id="chiplet-south">
+        <!-- Thickness -->
+        <polygon points="410,290 500,325 500,345 410,310" fill="url(#chipletEdgeLeft)"/>
+        <polygon points="500,325 590,290 590,310 500,345" fill="url(#chipletEdgeRight)"/>
+        <!-- Top Face -->
+        <polygon points="500,255 590,290 500,325 410,290" fill="url(#chipletTop)" stroke="#94A3B8" stroke-width="1.8"/>
+        <!-- Brushed Texture Lines -->
+        <line x1="440" y1="290" x2="530" y2="325" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+        <line x1="470" y1="278" x2="560" y2="313" stroke="#64748B" stroke-width="0.7" opacity="0.5"/>
+      </g>
+
+      <!-- Silver Chamfer Highlights on all 4 Chiplet rims -->
+      <g stroke="#FFFFFF" stroke-width="1" opacity="0.85">
+        <line x1="500" y1="175" x2="590" y2="210"/>
+        <line x1="395" y1="215" x2="485" y2="250"/>
+        <line x1="605" y1="215" x2="695" y2="250"/>
+        <line x1="500" y1="255" x2="590" y2="290"/>
+      </g>
+    </g>
+
+  </g>
+
+  <!-- ================= TYPOGRAPHY SECTION ================= -->
+  <g id="brand-typography" transform="translate(500, 770)" text-anchor="middle">
+
+    <!-- 3D Beveled Shadow under HYPERD -->
+    <text x="0" y="6" font-family="'Space Grotesk', 'Orbitron', 'Montserrat', -apple-system, sans-serif" font-size="116" font-weight="900" letter-spacing="18" fill="#050811" opacity="0.9">
+      HYPERD
+    </text>
+
+    <!-- Main Wordmark: HYPER (Chrome Steel) + D (Glowing Neon Cyan) -->
+    <!-- HYPER -->
+    <text x="-58" y="0" text-anchor="middle" font-family="'Space Grotesk', 'Orbitron', 'Montserrat', -apple-system, sans-serif" font-size="116" font-weight="900" letter-spacing="18" fill="url(#chromeText)">
+      HYPER
+    </text>
+
+    <!-- D (Glowing Cyan with Backlight) -->
+    <text x="318" y="0" text-anchor="middle" font-family="'Space Grotesk', 'Orbitron', 'Montserrat', -apple-system, sans-serif" font-size="116" font-weight="900" fill="url(#cyanDText)" filter="url(#laserGlow)">
+      D
+    </text>
+    <text x="318" y="0" text-anchor="middle" font-family="'Space Grotesk', 'Orbitron', 'Montserrat', -apple-system, sans-serif" font-size="116" font-weight="900" fill="#E0F2FE">
+      D
+    </text>
+
+    <!-- Subtitle / Tagline: HIGH-PERFORMANCE COMPUTING -->
+    <g transform="translate(0, 68)">
+      <line x1="-380" y1="-8" x2="-220" y2="-8" stroke="#334155" stroke-width="2"/>
+      <circle cx="-212" cy="-8" r="3.5" fill="#00F2FE" filter="url(#laserGlow)"/>
+
+      <text x="0" y="0" font-family="'Inter', sans-serif" font-size="20" font-weight="600" letter-spacing="10" fill="#94A3B8">
+        HIGH-PERFORMANCE COMPUTING
+      </text>
+
+      <circle cx="212" cy="-8" r="3.5" fill="#00F2FE" filter="url(#laserGlow)"/>
+      <line x1="220" y1="-8" x2="380" y2="-8" stroke="#334155" stroke-width="2"/>
+    </g>
+
+    <!-- Store Category Definition -->
+    <text x="0" y="115" font-family="'Inter', sans-serif" font-size="14" font-weight="400" letter-spacing="5" fill="#64748B">
+      COMPUTERS • HARDWARE • WORKSTATIONS
+    </text>
+  </g>
+
+</svg>
