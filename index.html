@@ -1,17 +1,595 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#123f34" />
-    <meta
-      name="description"
-      content="همسایه‌یار؛ سامانه امن و محرمانه ثبت و پیگیری مزاحمت‌های همسایگی"
-    />
-    <title>همسایه‌یار | آرامش در همسایگی</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HYPERD // Official Brand Package & Assets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Vazirmatn:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080C14;
+      --bg-card: #0E1524;
+      --bg-card-hover: #162035;
+      --cyan-neon: #00F2FE;
+      --cyan-deep: #0284C7;
+      --silver: #CBD5E1;
+      --text-muted: #94A3B8;
+      --border-color: #1E293B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--silver);
+      font-family: 'Vazirmatn', -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 12, 20, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--cyan-deep);
+    }
+
+    .brand-title-group h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      letter-spacing: 4px;
+      color: #FFFFFF;
+      margin: 0;
+      text-align: left;
+      direction: ltr;
+    }
+
+    .brand-title-group h1 span {
+      color: var(--cyan-neon);
+      text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+    }
+
+    .brand-title-group p {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .actions-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-download-zip {
+      background: linear-gradient(135deg, #00F2FE 0%, #0284C7 100%);
+      color: #030712;
+      font-family: 'Vazirmatn', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.45);
+      transition: all 0.25s ease;
+    }
+
+    .btn-download-zip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.7);
+    }
+
+    .btn-download-pdf {
+      background: var(--bg-card);
+      color: #FFFFFF;
+      border: 1px solid var(--cyan-deep);
+      font-family: 'Vazirmatn', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-download-pdf:hover {
+      background: rgba(2, 132, 199, 0.3);
+      border-color: var(--cyan-neon);
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 24px 20px 80px 20px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(90deg, rgba(2, 132, 199, 0.16) 0%, rgba(14, 21, 36, 0.9) 100%);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .hero-text h2 {
+      font-size: 18px;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .hero-text p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 780px;
+    }
+
+    .section-header {
+      font-size: 18px;
+      color: #FFFFFF;
+      margin: 32px 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    /* Grid of All Images */
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      margin-bottom: 40px;
+    }
+
+    .image-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+
+    .image-card:hover {
+      border-color: var(--cyan-deep);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .image-card-img-wrap {
+      background: #030508;
+      width: 100%;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .image-card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .image-card:hover .image-card-img-wrap img {
+      transform: scale(1.03);
+    }
+
+    .image-card-body {
+      padding: 16px;
+    }
+
+    .image-card-body h3 {
+      font-size: 15px;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .image-card-body p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .card-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .card-btn-primary {
+      background: var(--cyan-deep);
+      color: #FFFFFF;
+    }
+
+    .card-btn-primary:hover {
+      background: #0369A1;
+    }
+
+    .card-btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--silver);
+      border: 1px solid var(--border-color);
+    }
+
+    .card-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--cyan-deep);
+    }
+
+    /* Brand Book 13 Pages Gallery */
+    .pages-strip-container {
+      background: #04060A;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 40px;
+    }
+
+    .pages-slider-viewer {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .pages-slider-viewer img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--border-color);
+    }
+
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      direction: ltr;
+    }
+
+    .btn-nav {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: #FFFFFF;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      background: var(--cyan-deep);
+      border-color: var(--cyan-neon);
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .indicator-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      color: var(--silver);
+      letter-spacing: 2px;
+    }
+
+    .indicator-text span {
+      color: var(--cyan-neon);
+      font-weight: 700;
+    }
+
+    .thumbnails-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 12px 0 6px 0;
+    }
+
+    .thumbnails-row::-webkit-scrollbar {
+      height: 7px;
+    }
+
+    .thumbnails-row::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 4px;
+    }
+
+    .thumb-btn {
+      flex: 0 0 130px;
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .thumb-btn.active {
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.5);
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      height: 75px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .thumb-btn span {
+      display: block;
+      font-size: 11px;
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 3px 0;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="brand-logo-wrap">
+      <img src="/hyperd_silicon_chiplet_detailed_master.png" alt="Logo" class="brand-logo-img">
+      <div class="brand-title-group">
+        <h1>HYPER<span>D</span></h1>
+        <p>BRAND ASSETS & IDENTITY PACKAGE</p>
+      </div>
+    </div>
+
+    <div class="actions-group">
+      <!-- Main ZIP Download Button -->
+      <a href="/Hyperd_Brand_Package.zip" class="btn-download-zip" download="Hyperd_Brand_Package.zip">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        دانلود کل پکیج در قالب ZIP (۲۸ مگابایت)
+      </a>
+
+      <!-- Single PDF Download -->
+      <a href="/Hyperd_Brand_Book.pdf" class="btn-download-pdf" download="Hyperd_Brand_Book.pdf">
+        دریافت تک‌فایل PDF
+      </a>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <main class="container">
+
+    <!-- Hero Announcement -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h2>پکیج کامل فایل‌های برند Hyperd آماده تحویل است</h2>
+        <p>تمامی دارایی‌های تولیدشده اعم از فایل PDF کتابچه برند، سورس وکتور SVG، رندرهای باکیفیت 8K، موکاپ‌های شو‌روم و بسته‌بندی، و تمام ۱۳ صفحه تفکیک‌شده کتابچه به‌صورت یکپارچه در فایل ZIP زیر بسته‌بندی شده‌اند.</p>
+      </div>
+      <div>
+        <a href="/Hyperd_Brand_Package.zip" class="btn-download-zip" download="Hyperd_Brand_Package.zip" style="padding: 12px 24px; font-size: 15px;">
+          📦 دانلود فایل Hyperd_Brand_Package.zip
+        </a>
+      </div>
+    </div>
+
+    <!-- Section: Core Images -->
+    <h2 class="section-header">تصاویر و دارایی‌های گرافیکی اختصاصی برند</h2>
+    <div class="images-grid">
+
+      <!-- Card 1: Master 8K Render -->
+      <div class="image-card">
+        <div class="image-card-img-wrap">
+          <img src="/hyperd_silicon_chiplet_detailed_master.png" alt="Master Logo Render">
+        </div>
+        <div class="image-card-body">
+          <h3>رندر ماکروی اصلی لوگوی چیپلت (8K)</h3>
+          <p>تصویر اصلی و بسیار دقیق آرم سه‌بعدی لایه‌های ویفر، اینترپوزر نوری و ۴ چیپلت تیتانیومی با تایپوگرافی فلزی.</p>
+          <div class="card-actions">
+            <a href="/hyperd_silicon_chiplet_detailed_master.png" target="_blank" class="card-btn card-btn-secondary">مشاهده سایز اصلی</a>
+            <a href="/hyperd_silicon_chiplet_detailed_master.png" download="hyperd_logo_master_8k.png" class="card-btn card-btn-primary">دانلود عکس</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Merch & Packaging Mockup -->
+      <div class="image-card">
+        <div class="image-card-img-wrap">
+          <img src="/hyperd_chiplet_merch_mockup.png" alt="Packaging Mockup">
+        </div>
+        <div class="image-card-body">
+          <h3>موکاپ بسته‌بندی، کارت VIP و هولوگرام</h3>
+          <p>اجرای واقعی روی جعبه هاردباکس مشکی مات، کارت تیتانیومی گارانتی، پلمب امنیتی خردشونده و بند آویز گردنی.</p>
+          <div class="card-actions">
+            <a href="/hyperd_chiplet_merch_mockup.png" target="_blank" class="card-btn card-btn-secondary">مشاهده سایز اصلی</a>
+            <a href="/hyperd_chiplet_merch_mockup.png" download="hyperd_packaging_mockup.png" class="card-btn card-btn-primary">دانلود عکس</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Store Showroom Interior -->
+      <div class="image-card">
+        <div class="image-card-img-wrap">
+          <img src="/hyperd_store_facade_mockup.png" alt="Store Facade Mockup">
+        </div>
+        <div class="image-card-body">
+          <h3>موکاپ معماری شو‌روم و تابلوی پذیرش</h3>
+          <p>طراحی دکوراسیون داخلی، تابلوی سه‌بعدی استیل برس‌خورده با بک‌لایت آبی کبالت روی دیوار اسلات‌وال پذیرش.</p>
+          <div class="card-actions">
+            <a href="/hyperd_store_facade_mockup.png" target="_blank" class="card-btn card-btn-secondary">مشاهده سایز اصلی</a>
+            <a href="/hyperd_store_facade_mockup.png" download="hyperd_store_showroom.png" class="card-btn card-btn-primary">دانلود عکس</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Brand Identity Guidelines Sheet -->
+      <div class="image-card">
+        <div class="image-card-img-wrap">
+          <img src="/hyperd_chiplet_master_brand.png" alt="Brand Identity Sheet">
+        </div>
+        <div class="image-card-body">
+          <h3>شیت جامع هویت بصری و ابعاد فنی</h3>
+          <p>شامل حاشیه امن (Clear Space)، نسخه‌های افقی و عمودی، پالت‌های رنگی و فونت‌های استاندارد.</p>
+          <div class="card-actions">
+            <a href="/hyperd_chiplet_master_brand.png" target="_blank" class="card-btn card-btn-secondary">مشاهده سایز اصلی</a>
+            <a href="/hyperd_chiplet_master_brand.png" download="hyperd_brand_guidelines_sheet.png" class="card-btn card-btn-primary">دانلود عکس</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Vector SVG Logo -->
+      <div class="image-card">
+        <div class="image-card-img-wrap" style="padding: 20px;">
+          <img src="/hyperd_chiplet_official.svg" alt="Vector SVG Logo" style="object-fit: contain;">
+        </div>
+        <div class="image-card-body">
+          <h3>سورس وکتور لوگو (Official Vector SVG)</h3>
+          <p>فایل مقیاس‌پذیر برداری جهت چاپ افست، کاترپلاتر، برش لیزر سی‌ان‌سی و تابلو‌سازی بدون افت کیفیت.</p>
+          <div class="card-actions">
+            <a href="/hyperd_chiplet_official.svg" target="_blank" class="card-btn card-btn-secondary">پیش‌نمایش</a>
+            <a href="/hyperd_chiplet_official.svg" download="hyperd_chiplet_official.svg" class="card-btn card-btn-primary">دانلود وکتور SVG</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: 16 Logo Concepts Grid -->
+      <div class="image-card">
+        <div class="image-card-img-wrap">
+          <img src="/hyperd_logo_concepts_grid_2.png" alt="Logo Concepts Grid">
+        </div>
+        <div class="image-card-body">
+          <h3>بورد کانسپت‌های ۸‌گانه دوم</h3>
+          <p>شامل ۸ ایده مفهومی سیلیکونی، منشور لیزری، هیت‌سینک، حلقه فیبرنوری و مونوگرام فضای منفی.</p>
+          <div class="card-actions">
+            <a href="/hyperd_logo_concepts_grid_2.png" target="_blank" class="card-btn card-btn-secondary">مشاهده سایز اصلی</a>
+            <a href="/hyperd_logo_concepts_grid_2.png" download="hyperd_concepts_board.png" class="card-btn card-btn-primary">دانلود عکس</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Section: 13 Pages Interactive Gallery -->
+    <h2 class="section-header">صفحات ۱۳‌گانه کتابچه برند (Brand Book Pages)</h2>
+    <div class="pages-strip-container">
+      <div class="pages-slider-viewer">
+        <img id="curPageImg" src="/page_1.png" alt="Page 1">
+        <div class="controls-row">
+          <button id="pPrev" class="btn-nav" onclick="changeP(-1)" disabled>◀ PREV PAGE</button>
+          <div class="indicator-text">PAGE <span id="pNum">1</span> OF 13</div>
+          <button id="pNext" class="btn-nav" onclick="changeP(1)">NEXT PAGE ▶</button>
+        </div>
+      </div>
+
+      <div class="thumbnails-row" id="thumbsRow">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let pCurrent = 1;
+    const pTotal = 13;
+    const thumbsRow = document.getElementById('thumbsRow');
+
+    for (let i = 1; i <= pTotal; i++) {
+      const btn = document.createElement('div');
+      btn.className = `thumb-btn ${i === 1 ? 'active' : ''}`;
+      btn.id = `thumb-btn-${i}`;
+      btn.onclick = () => setPage(i);
+      btn.innerHTML = `
+        <img src="/page_${i}.png" alt="P ${i}" loading="lazy">
+        <span>PAGE ${i}</span>
+      `;
+      thumbsRow.appendChild(btn);
+    }
+
+    function setPage(n) {
+      pCurrent = n;
+      const img = document.getElementById('curPageImg');
+      img.style.opacity = 0.5;
+      img.src = `/page_${pCurrent}.png`;
+      img.onload = () => { img.style.opacity = 1; };
+
+      document.getElementById('pNum').innerText = pCurrent;
+      document.getElementById('pPrev').disabled = pCurrent === 1;
+      document.getElementById('pNext').disabled = pCurrent === pTotal;
+
+      document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`thumb-btn-${pCurrent}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+
+    function changeP(delta) {
+      const next = pCurrent + delta;
+      if (next >= 1 && next <= pTotal) {
+        setPage(next);
+      }
+    }
+  </script>
+</body>
 </html>
