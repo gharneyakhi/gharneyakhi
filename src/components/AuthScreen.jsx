@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AlertTriangle, ArrowLeft, Home, LockKeyhole, Mail, UserRound } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, LockKeyhole, Mail, Receipt, UserRound } from 'lucide-react';
 import { isSupabaseConfigured, supabase } from '../lib/supabase';
 
 function getAuthErrorMessage(error) {
@@ -65,7 +65,7 @@ export default function AuthScreen() {
     return (
       <main className="auth-shell" dir="rtl">
         <section className="auth-card setup-card">
-          <span className="auth-logo"><Home size={25} /></span>
+          <span className="auth-logo"><Receipt size={25} /></span>
           <h1>اتصال Supabase تنظیم نشده است</h1>
           <p>فایل <code>.env</code> را از روی <code>.env.example</code> بسازید و این دو مقدار را قرار دهید:</p>
           <pre>SUPABASE_URL=...{`\n`}SUPABASE_ANON_KEY=...</pre>
@@ -78,8 +78,8 @@ export default function AuthScreen() {
   return (
     <main className="auth-shell" dir="rtl">
       <section className="auth-card">
-        <div className="auth-brand"><span className="auth-logo"><Home size={24} /></span><div><strong>همسایه‌یار</strong><small>آرامش در همسایگی</small></div></div>
-        <div className="auth-copy"><h1>{mode === 'login' ? 'خوش آمدید' : 'ساخت حساب امن'}</h1><p>{mode === 'login' ? 'برای مشاهده و پیگیری گزارش‌های خود وارد شوید.' : 'اطلاعات شما با سیاست‌های امنیتی Supabase محافظت می‌شود.'}</p></div>
+        <div className="auth-brand"><span className="auth-logo"><Receipt size={24} /></span><div><strong>فاکتور ساز</strong><small>سربرگ کسب‌وکار شما</small></div></div>
+        <div className="auth-copy"><h1>{mode === 'login' ? 'خوش آمدید' : 'ساخت حساب امن'}</h1><p>{mode === 'login' ? 'برای دسترسی به فاکتورها و تنظیم فاکتور وارد شوید.' : 'تنظیم فاکتور و فاکتورهای شما در حساب خودتان ذخیره می‌شود.'}</p></div>
         <div className="auth-tabs"><button className={mode === 'login' ? 'active' : ''} onClick={() => setMode('login')}>ورود</button><button className={mode === 'signup' ? 'active' : ''} onClick={() => setMode('signup')}>ثبت‌نام</button></div>
         <form className="auth-form" onSubmit={submit}>
           {mode === 'signup' && <label>نام و نام خانوادگی<div className="auth-input"><UserRound size={18} /><input required value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" /></div></label>}
@@ -90,8 +90,8 @@ export default function AuthScreen() {
           <button className="primary-btn auth-submit" disabled={busy}>{busy ? 'لطفاً صبر کنید…' : mode === 'login' ? <>ورود <ArrowLeft size={17} /></> : <>ساخت حساب <ArrowLeft size={17} /></>}</button>
         </form>
         <div className="auth-divider"><span>یا</span></div>
-        <button className="guest-btn" disabled={busy} onClick={enterAsGuest}><LockKeyhole size={18} /><span><strong>ورود ناشناس / مهمان</strong><small>بدون ایمیل وارد شوید؛ گزارش‌ها همچنان فقط برای همین نشست کاربری قابل دسترسی‌اند.</small></span></button>
-        <p className="auth-privacy">ورود مهمان در Supabase یک شناسه امن و ناشناس ایجاد می‌کند و هویت واقعی شما ثبت نمی‌شود.</p>
+        <button className="guest-btn" disabled={busy} onClick={enterAsGuest}><LockKeyhole size={18} /><span><strong>ورود سریع و مهمان</strong><small>بدون ایمیل وارد شوید و فاکتورسازی را همین حالا امتحان کنید.</small></span></button>
+        <p className="auth-privacy">اطلاعات کسب‌وکار، لوگو و فاکتورهای شما در حساب خودتان ذخیره می‌شود و از هر دستگاهی در دسترس است.</p>
       </section>
     </main>
   );
