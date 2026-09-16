@@ -1,769 +1,647 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  AlertTriangle,
   ArrowLeft,
-  ArrowRight,
-  Bell,
-  BookOpen,
-  Building2,
-  CalendarDays,
-  CarFront,
-  Check,
-  CheckCircle2,
-  ChevronLeft,
+  ArrowUpLeft,
+  BadgeCheck,
   ChevronDown,
-  ChevronUp,
-  CircleHelp,
-  ClipboardList,
+  ChevronLeft,
+  ChevronRight,
+  CircleUserRound,
   Clock3,
-  FileText,
+  Gem,
   Headphones,
-  Home,
-  LayoutDashboard,
-  LockKeyhole,
-  LogOut,
+  Heart,
+  Instagram,
   MapPin,
   Menu,
-  MessageCircleMore,
-  MoreHorizontal,
-  Paperclip,
-  PawPrint,
-  PhoneCall,
+  Minus,
+  PackageCheck,
+  Phone,
   Plus,
+  RotateCcw,
   Search,
-  Settings,
+  Send,
   ShieldCheck,
-  SlidersHorizontal,
+  ShoppingBag,
   Sparkles,
-  Trash2,
-  UploadCloud,
-  UserRound,
-  Volume2,
+  Star,
+  Truck,
+  Watch,
   X,
 } from 'lucide-react';
-import AuthScreen from './components/AuthScreen';
-import { isSupabaseConfigured, supabase } from './lib/supabase';
-import { createReport, fetchReports, updateReportStatus } from './services/reports';
+import heroImage from './assets/davam-hero.jpg';
+import azadiImage from './assets/watch-azadi.jpg';
+import shabImage from './assets/watch-shab.jpg';
+import mahImage from './assets/watch-mah.jpg';
+import sahraImage from './assets/watch-sahra.jpg';
+import silverImage from './assets/watch-silver.jpg';
+import royaImage from './assets/watch-roya.jpg';
 
-const reportTypes = [
-  { id: 'noise', title: 'سر و صدای زیاد', hint: 'موسیقی، مهمانی یا ساخت‌وساز', Icon: Volume2, color: 'coral' },
-  { id: 'parking', title: 'پارک مزاحم', hint: 'مسدود کردن ورودی یا توقفگاه', Icon: CarFront, color: 'blue' },
-  { id: 'common', title: 'مشاعات ساختمان', hint: 'راهرو، آسانسور یا حیاط', Icon: Building2, color: 'green' },
-  { id: 'pet', title: 'حیوانات خانگی', hint: 'صدا یا نگهداری نامناسب', Icon: PawPrint, color: 'purple' },
-  { id: 'other', title: 'سایر موارد', hint: 'موضوعی خارج از دسته‌های بالا', Icon: MoreHorizontal, color: 'sand' },
+const products = [
+  {
+    id: 'azadi',
+    name: 'آزادی',
+    latinName: 'AZADI AUTOMATIC',
+    collection: 'کالکشن میراث',
+    category: 'men',
+    categoryLabel: 'مردانه',
+    image: azadiImage,
+    price: 18980000,
+    oldPrice: 20900000,
+    badge: 'پرفروش',
+    rating: '۴٫۹',
+    reviews: '۳۲',
+    movement: 'اتوماتیک ژاپن',
+    caseSize: '۴۰ میلی‌متر',
+    glass: 'سافایر ضدخش',
+    resistance: '۵ اتمسفر',
+    color: 'سرمه‌ای / چرم قهوه‌ای',
+    description: 'ترکیبی آرام از صفحه‌ی سرمه‌ای آفتاب‌گردان و چرم دست‌دوز؛ برای قرارهایی که قرار است در خاطر بمانند.',
+  },
+  {
+    id: 'shab',
+    name: 'شب',
+    latinName: 'SHAB CHRONOGRAPH',
+    collection: 'کالکشن معاصر',
+    category: 'men',
+    categoryLabel: 'مردانه',
+    image: shabImage,
+    price: 24750000,
+    oldPrice: null,
+    badge: 'جدید',
+    rating: '۴٫۸',
+    reviews: '۱۸',
+    movement: 'کرنوگراف کوارتز',
+    caseSize: '۴۲ میلی‌متر',
+    glass: 'کریستال معدنی',
+    resistance: '۱۰ اتمسفر',
+    color: 'مشکی / گان‌متال',
+    description: 'کرنوگرافی یک‌دست و قدرتمند با جزئیاتی مهندسی‌شده؛ امضای انتخاب‌های دقیق و بی‌حاشیه.',
+  },
+  {
+    id: 'mah',
+    name: 'ماه',
+    latinName: 'MAH PEARL',
+    collection: 'کالکشن نور',
+    category: 'women',
+    categoryLabel: 'زنانه',
+    image: mahImage,
+    price: 15800000,
+    oldPrice: 17400000,
+    badge: 'انتخاب هدیه',
+    rating: '۵٫۰',
+    reviews: '۲۶',
+    movement: 'کوارتز دقیق',
+    caseSize: '۳۰ میلی‌متر',
+    glass: 'کریستال ضدخش',
+    resistance: '۳ اتمسفر',
+    color: 'شامپاینی / صدفی',
+    description: 'صفحه‌ی صدف طبیعی و بند حصیری ظریف، در قاب شامپاینی؛ درخشش ملایمی که هر روز قابل پوشیدن است.',
+  },
+  {
+    id: 'sahra',
+    name: 'صحرا',
+    latinName: 'SAHRA FIELD',
+    collection: 'کالکشن سفر',
+    category: 'automatic',
+    categoryLabel: 'اتوماتیک',
+    image: sahraImage,
+    price: 20400000,
+    oldPrice: null,
+    badge: 'تعداد محدود',
+    rating: '۴٫۷',
+    reviews: '۱۴',
+    movement: 'اتوماتیک ۲۱ سنگ',
+    caseSize: '۴۱ میلی‌متر',
+    glass: 'سافایر ضدخش',
+    resistance: '۱۰ اتمسفر',
+    color: 'سبز جنگلی / برنز',
+    description: 'بدنه‌ی برنزی گرم، صفحه‌ی سبز عمیق و بندی آماده‌ی سفر؛ ساخته‌شده برای مسیرهای نرفته.',
+  },
+  {
+    id: 'sepehr',
+    name: 'سپهر',
+    latinName: 'SEPEHR 06',
+    collection: 'کالکشن مینیمال',
+    category: 'unisex',
+    categoryLabel: 'یونیسکس',
+    image: silverImage,
+    price: 16900000,
+    oldPrice: null,
+    badge: 'مینیمال',
+    rating: '۴٫۹',
+    reviews: '۲۱',
+    movement: 'کوارتز سوئیس',
+    caseSize: '۳۶ میلی‌متر',
+    glass: 'سافایر تخت',
+    resistance: '۵ اتمسفر',
+    color: 'نقره‌ای / سفید',
+    description: 'خطوط معماری، قاب چهارگوش و صفحه‌ای بی‌پیرایه؛ انتخابی خنثی برای سبک‌های شخصی و ماندگار.',
+  },
+  {
+    id: 'roya',
+    name: 'رویا',
+    latinName: 'ROYA ROSE',
+    collection: 'کالکشن نور',
+    category: 'women',
+    categoryLabel: 'زنانه',
+    image: royaImage,
+    price: 14250000,
+    oldPrice: 15900000,
+    badge: 'ویژه',
+    rating: '۴٫۸',
+    reviews: '۱۷',
+    movement: 'کوارتز دقیق',
+    caseSize: '۲۸ میلی‌متر',
+    glass: 'کریستال ضدخش',
+    resistance: '۳ اتمسفر',
+    color: 'رزگلد / زرشکی',
+    description: 'قاب باریک رزگلد در کنار چرم زرشکی لطیف؛ طراحی شاعرانه‌ای برای لحظه‌های ساده و مهم.',
+  },
 ];
 
-const navItems = [
-  { id: 'dashboard', label: 'نمای کلی', Icon: LayoutDashboard },
-  { id: 'reports', label: 'گزارش‌های من', Icon: ClipboardList },
-  { id: 'guide', label: 'راهنمای حقوقی', Icon: BookOpen },
-  { id: 'support', label: 'پشتیبانی', Icon: MessageCircleMore },
+const categories = [
+  {
+    id: 'men',
+    title: 'ساعت مردانه',
+    caption: 'دقیق، استوار، ماندگار',
+    image: shabImage,
+    count: '۲۴ مدل',
+  },
+  {
+    id: 'women',
+    title: 'ساعت زنانه',
+    caption: 'ظرافت در هر ثانیه',
+    image: mahImage,
+    count: '۱۸ مدل',
+  },
+  {
+    id: 'automatic',
+    title: 'مکانیکی و اتوماتیک',
+    caption: 'نبض زنده‌ی مهندسی',
+    image: sahraImage,
+    count: '۱۲ مدل',
+  },
 ];
 
-const statusMap = {
-  reviewing: { label: 'در حال بررسی', className: 'amber' },
-  answered: { label: 'پاسخ داده شد', className: 'teal' },
-  resolved: { label: 'مختومه', className: 'gray' },
-};
+const navLinks = [
+  ['new', 'جدیدترین‌ها'],
+  ['collection', 'فروشگاه'],
+  ['categories', 'کالکشن‌ها'],
+  ['story', 'داستان دوام'],
+  ['services', 'خدمات'],
+];
 
-function toPersianDigits(value) {
-  return String(value).replace(/\d/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'[digit]);
+function formatPrice(value) {
+  return `${new Intl.NumberFormat('fa-IR').format(value)} تومان`;
 }
 
-function getPersianToday() {
-  try {
-    return new Intl.DateTimeFormat('fa-IR', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date());
-  } catch {
-    return 'یکشنبه، ۲۵ مرداد ۱۴۰۵';
-  }
+function Brand({ light = false, onClick }) {
+  return (
+    <a className={`brand ${light ? 'brand--light' : ''}`} href="#top" onClick={onClick} aria-label="گالری ساعت دوام، صفحه اصلی">
+      <span className="brand__symbol" aria-hidden="true">
+        <i className="brand__hand brand__hand--hour" />
+        <i className="brand__hand brand__hand--minute" />
+        <b />
+      </span>
+      <span className="brand__copy">
+        <strong dir="ltr">DAVAM</strong>
+        <small>گالری ساعت دوام</small>
+      </span>
+    </a>
+  );
 }
 
 function App() {
-  const [activePage, setActivePage] = useState('dashboard');
-  const [session, setSession] = useState(null);
-  const [authLoading, setAuthLoading] = useState(isSupabaseConfigured);
-  const [reports, setReports] = useState([]);
-  const [reportsLoading, setReportsLoading] = useState(false);
-  const [reportModalOpen, setReportModalOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [cart, setCart] = useState({});
+  const [cartOpen, setCartOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [quickProduct, setQuickProduct] = useState(null);
+  const [favorites, setFavorites] = useState([]);
   const [toast, setToast] = useState('');
+  const [newsletter, setNewsletter] = useState('');
+  const [headerRaised, setHeaderRaised] = useState(false);
+
+  const visibleProducts = useMemo(() => {
+    if (activeFilter === 'all') return products;
+    if (activeFilter === 'men') return products.filter((product) => product.category === 'men' || product.category === 'automatic');
+    return products.filter((product) => product.category === activeFilter);
+  }, [activeFilter]);
+
+  const cartItems = useMemo(
+    () => products.filter((product) => cart[product.id]).map((product) => ({ ...product, quantity: cart[product.id] })),
+    [cart],
+  );
+
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return products.slice(0, 4);
+    return products.filter((product) => `${product.name} ${product.latinName} ${product.collection} ${product.categoryLabel}`.toLowerCase().includes(query));
+  }, [searchQuery]);
 
   useEffect(() => {
-    if (!supabase) return undefined;
-    let active = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (active) {
-        setSession(data.session);
-        setAuthLoading(false);
-      }
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      if (active) {
-        setSession(nextSession);
-        setAuthLoading(false);
-        if (!nextSession) setReports([]);
-      }
-    });
-    return () => {
-      active = false;
-      listener.subscription.unsubscribe();
-    };
+    const onScroll = () => setHeaderRaised(window.scrollY > 18);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    if (!session?.user) return undefined;
-    let active = true;
-    setReportsLoading(true);
-    fetchReports()
-      .then((items) => active && setReports(items))
-      .catch((error) => active && setToast(`خطا در دریافت گزارش‌ها: ${error.message}`))
-      .finally(() => active && setReportsLoading(false));
-    return () => { active = false; };
-  }, [session?.user?.id]);
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('is-visible')),
+      { threshold: 0.12 },
+    );
+    document.querySelectorAll('[data-reveal]').forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, [activeFilter]);
+
+  useEffect(() => {
+    const anyOverlay = cartOpen || menuOpen || searchOpen || quickProduct;
+    document.body.classList.toggle('is-locked', Boolean(anyOverlay));
+    const closeOnEscape = (event) => {
+      if (event.key !== 'Escape') return;
+      setCartOpen(false);
+      setMenuOpen(false);
+      setSearchOpen(false);
+      setQuickProduct(null);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.classList.remove('is-locked');
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [cartOpen, menuOpen, searchOpen, quickProduct]);
 
   useEffect(() => {
     if (!toast) return undefined;
-    const timer = window.setTimeout(() => setToast(''), 4200);
+    const timer = window.setTimeout(() => setToast(''), 3200);
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  const navigate = (page) => {
-    setActivePage(page);
-    setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const addToCart = (product, quantity = 1) => {
+    setCart((current) => ({ ...current, [product.id]: (current[product.id] || 0) + quantity }));
+    setToast(`«${product.name}» به سبد خرید اضافه شد`);
   };
 
-  const addReport = async (report) => {
-    const savedReport = await createReport(report, session.user);
-    setReports((current) => [savedReport, ...current]);
-    setToast('گزارش شما با موفقیت و به‌صورت امن ثبت شد');
-    setActivePage('reports');
-    return savedReport;
+  const updateQuantity = (id, change) => {
+    setCart((current) => {
+      const nextQuantity = (current[id] || 0) + change;
+      const next = { ...current };
+      if (nextQuantity <= 0) delete next[id];
+      else next[id] = nextQuantity;
+      return next;
+    });
   };
 
-  const closeReport = async (id) => {
-    const updated = await updateReportStatus(id, 'resolved');
-    setReports((items) => items.map((report) => (report.id === id ? updated : report)));
-    setToast('گزارش به‌عنوان مختومه ثبت شد');
+  const toggleFavorite = (id) => {
+    setFavorites((current) => (
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+    ));
   };
 
-  const signOut = async () => {
-    setProfileOpen(false);
-    const { error } = await supabase.auth.signOut();
-    if (error) setToast(`خروج انجام نشد: ${error.message}`);
+  const selectCategory = (id) => {
+    setActiveFilter(id);
+    window.setTimeout(() => document.getElementById('collection')?.scrollIntoView({ behavior: 'smooth' }), 30);
   };
 
-  if (authLoading) return <div className="app-loading" dir="rtl"><span className="loading-spinner" />در حال برقراری اتصال امن…</div>;
-  if (!session) return <AuthScreen />;
+  const submitNewsletter = (event) => {
+    event.preventDefault();
+    if (!newsletter.trim()) return;
+    setNewsletter('');
+    setToast('عضویت شما در باشگاه دوام ثبت شد');
+  };
 
   return (
-    <div className="app-shell" dir="rtl">
-      <Sidebar
-        activePage={activePage}
-        navigate={navigate}
-        profileOpen={profileOpen}
-        setProfileOpen={setProfileOpen}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-        user={session.user}
-        reportsCount={reports.length}
-        onSignOut={signOut}
-      />
-
-      <main className="main-area">
-        <Topbar
-          activePage={activePage}
-          setMobileMenuOpen={setMobileMenuOpen}
-          notificationsOpen={notificationsOpen}
-          setNotificationsOpen={setNotificationsOpen}
-          openReport={() => setReportModalOpen(true)}
-        />
-
-        <div className="content-wrap">
-          {activePage === 'dashboard' && (
-            <Dashboard
-              reports={reports}
-              openReport={() => setReportModalOpen(true)}
-              navigate={navigate}
-            />
-          )}
-          {activePage === 'reports' && (
-            <ReportsPage
-              reports={reports}
-              loading={reportsLoading}
-              closeReport={closeReport}
-              openReport={() => setReportModalOpen(true)}
-              showToast={setToast}
-            />
-          )}
-          {activePage === 'guide' && <GuidePage navigate={navigate} />}
-          {activePage === 'support' && <SupportPage showToast={setToast} />}
-          {activePage === 'settings' && <SettingsPage showToast={setToast} />}
+    <div className="site-shell" id="top" dir="rtl">
+      <div className="announcement">
+        <div className="container announcement__inner">
+          <span><ShieldCheck size={14} /> ضمانت اصالت مادام‌العمر</span>
+          <p>ارسال رایگان سراسر ایران برای خرید بالای ۱۵ میلیون تومان</p>
+          <a href="tel:02188776654"><Phone size={13} /> ۰۲۱–۸۸۷۷۶۶۵۴</a>
         </div>
-      </main>
+      </div>
 
-      <MobileBottomNav activePage={activePage} navigate={navigate} openReport={() => setReportModalOpen(true)} />
-
-      {reportModalOpen && (
-        <ReportWizard
-          onClose={() => setReportModalOpen(false)}
-          onSubmit={addReport}
-        />
-      )}
-
-      {toast && (
-        <div className="toast" role="status">
-          <span className="toast-icon"><Check size={18} strokeWidth={3} /></span>
-          {toast}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Brand({ compact = false }) {
-  return (
-    <div className={`brand ${compact ? 'compact' : ''}`} aria-label="همسایه‌یار">
-      <span className="brand-mark">
-        <Home size={21} strokeWidth={2.4} />
-        <span className="brand-heart">•</span>
-      </span>
-      {!compact && (
-        <span>
-          <strong>همسایه‌یار</strong>
-          <small>آرامش در همسایگی</small>
-        </span>
-      )}
-    </div>
-  );
-}
-
-function Sidebar({ activePage, navigate, profileOpen, setProfileOpen, mobileMenuOpen, setMobileMenuOpen, user, reportsCount, onSignOut }) {
-  const isGuest = user?.is_anonymous;
-  const displayName = user?.user_metadata?.full_name || (isGuest ? 'کاربر مهمان' : user?.email?.split('@')[0] || 'کاربر');
-  const avatar = displayName.slice(0, 2);
-  return (
-    <>
-      {mobileMenuOpen && <button className="mobile-overlay" aria-label="بستن منو" onClick={() => setMobileMenuOpen(false)} />}
-      <aside className={`sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-        <div className="sidebar-top">
-          <div className="sidebar-brand-row">
-            <Brand />
-            <button className="icon-btn close-menu" onClick={() => setMobileMenuOpen(false)} aria-label="بستن منو">
-              <X size={20} />
-            </button>
-          </div>
-          <nav className="side-nav" aria-label="منوی اصلی">
-            <span className="nav-caption">منوی اصلی</span>
-            {navItems.map(({ id, label, Icon }) => (
-              <button
-                key={id}
-                className={`nav-item ${activePage === id ? 'active' : ''}`}
-                onClick={() => navigate(id)}
-              >
-                <Icon size={20} />
-                <span>{label}</span>
-                {id === 'reports' && <span className="nav-count">{toPersianDigits(reportsCount)}</span>}
-              </button>
+      <header className={`site-header ${headerRaised ? 'site-header--raised' : ''}`}>
+        <div className="container header__inner">
+          <button className="header-icon mobile-menu-trigger" onClick={() => setMenuOpen(true)} aria-label="باز کردن منو">
+            <Menu size={23} />
+          </button>
+          <Brand />
+          <nav className="desktop-nav" aria-label="منوی اصلی">
+            {navLinks.map(([id, label]) => (
+              <a key={id} href={`#${id}`}>{label}{id === 'collection' && <ChevronDown size={14} />}</a>
             ))}
           </nav>
-
-          <div className="emergency-card">
-            <span className="emergency-icon"><PhoneCall size={18} /></span>
-            <div>
-              <strong>شرایط اضطراری دارید؟</strong>
-              <p>اگر در معرض خطر فوری هستید، مستقیماً با پلیس تماس بگیرید.</p>
-              <a href="tel:110">تماس با ۱۱۰ <ArrowLeft size={15} /></a>
-            </div>
-          </div>
-        </div>
-
-        <div className="sidebar-bottom">
-          <button className="settings-link" onClick={() => navigate('settings')}>
-            <Settings size={19} /> تنظیمات
-          </button>
-          <div className="profile-wrap">
-            <button className="profile-button" onClick={() => setProfileOpen((v) => !v)} aria-expanded={profileOpen}>
-              <span className="avatar">{avatar}</span>
-              <span className="profile-copy">
-                <strong>{displayName}</strong>
-                <small>{isGuest ? 'حساب ناشناس' : user?.email}</small>
-              </span>
-              <ChevronUp size={17} className={profileOpen ? '' : 'flipped'} />
+          <div className="header-actions">
+            <button className="header-icon" onClick={() => setSearchOpen(true)} aria-label="جست‌وجو">
+              <Search size={20} />
             </button>
-            {profileOpen && (
-              <div className="profile-menu">
-                <button onClick={() => navigate('settings')}><UserRound size={17} /> حساب کاربری</button>
-                <button onClick={onSignOut}><LogOut size={17} /> خروج از حساب</button>
+            <button className="header-icon action-account" onClick={() => setToast('ورود به باشگاه مشتریان به‌زودی فعال می‌شود')} aria-label="حساب کاربری">
+              <CircleUserRound size={20} />
+            </button>
+            <button className="header-icon action-favorites" onClick={() => setToast(favorites.length ? `${new Intl.NumberFormat('fa-IR').format(favorites.length)} ساعت در علاقه‌مندی‌های شماست` : 'هنوز ساعتی را به علاقه‌مندی‌ها اضافه نکرده‌اید')} aria-label="علاقه‌مندی‌ها">
+              <Heart size={20} />
+              {favorites.length > 0 && <span className="action-count">{new Intl.NumberFormat('fa-IR').format(favorites.length)}</span>}
+            </button>
+            <button className="header-icon cart-trigger" onClick={() => setCartOpen(true)} aria-label={`سبد خرید، ${cartCount} کالا`}>
+              <ShoppingBag size={20} />
+              {cartCount > 0 && <span className="action-count">{new Intl.NumberFormat('fa-IR').format(cartCount)}</span>}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section className="hero" aria-labelledby="hero-title">
+          <img className="hero__image" src={heroImage} alt="ساعت مکانیکی لوکس روی سنگ تیره" />
+          <div className="hero__shade" />
+          <div className="container hero__inner">
+            <div className="hero__content">
+              <span className="hero__eyebrow"><i /> کالکشن مکانیک ۱۴۰۵</span>
+              <h1 id="hero-title">زمان می‌گذرد؛<br /><em>اثر شما می‌ماند.</em></h1>
+              <p>منتخبی از ساعت‌های اصیل برای آدم‌هایی که جزئیات را اتفاقی انتخاب نمی‌کنند.</p>
+              <div className="hero__actions">
+                <a className="button button--gold" href="#collection">تماشای کالکشن <ArrowLeft size={18} /></a>
+                <button className="button button--ghost" onClick={() => setToast('درخواست مشاوره شما ثبت شد؛ با شما تماس می‌گیریم')}>مشاوره انتخاب ساعت</button>
               </div>
-            )}
-          </div>
-        </div>
-      </aside>
-    </>
-  );
-}
-
-function Topbar({ activePage, setMobileMenuOpen, notificationsOpen, setNotificationsOpen, openReport }) {
-  const titles = {
-    dashboard: 'نمای کلی',
-    reports: 'گزارش‌های من',
-    guide: 'راهنمای حقوقی',
-    support: 'پشتیبانی',
-    settings: 'تنظیمات',
-  };
-  return (
-    <header className="topbar">
-      <div className="mobile-brand">
-        <button className="icon-btn" aria-label="باز کردن منو" onClick={() => setMobileMenuOpen(true)}><Menu size={22} /></button>
-        <Brand compact />
-      </div>
-      <div className="topbar-title">
-        <h2>{titles[activePage]}</h2>
-        <span>{getPersianToday()}</span>
-      </div>
-      <div className="topbar-actions">
-        <div className="notification-wrap">
-          <button
-            className={`icon-btn notification-button ${notificationsOpen ? 'selected' : ''}`}
-            onClick={() => setNotificationsOpen((v) => !v)}
-            aria-label="اعلان‌ها"
-          >
-            <Bell size={20} />
-            <span className="notification-dot" />
-          </button>
-          {notificationsOpen && (
-            <div className="notifications-popover">
-              <div className="popover-title"><strong>اعلان‌ها</strong><span>۲ جدید</span></div>
-              <button>
-                <span className="notif-icon green"><MessageCircleMore size={17} /></span>
-                <span><strong>پاسخ جدید دریافت کردید</strong><small>برای گزارش HY-2796 یک پاسخ ثبت شد.</small><time>۲ ساعت پیش</time></span>
-              </button>
-              <button>
-                <span className="notif-icon amber"><Clock3 size={17} /></span>
-                <span><strong>گزارش در حال بررسی است</strong><small>مدیر ساختمان گزارش شما را مشاهده کرد.</small><time>دیروز</time></span>
-              </button>
+              <div className="hero__note"><BadgeCheck size={17} /><span><b>انتخاب با اطمینان</b> هفت روز فرصت تعویض</span></div>
             </div>
-          )}
-        </div>
-        <button className="primary-btn desktop-new-report" onClick={openReport}><Plus size={19} /> گزارش جدید</button>
-      </div>
-    </header>
-  );
-}
-
-function Dashboard({ reports, openReport, navigate }) {
-  const recentReports = reports.slice(0, 3);
-  const counts = useMemo(() => ({
-    reviewing: reports.filter((r) => r.status === 'reviewing').length,
-    answered: reports.filter((r) => r.status === 'answered').length,
-    resolved: reports.filter((r) => r.status === 'resolved').length,
-  }), [reports]);
-
-  return (
-    <div className="dashboard page-enter">
-      <section className="welcome-row">
-        <div>
-          <span className="eyebrow"><Sparkles size={16} /> یک فضای امن برای گفتگو</span>
-          <h1>سلام سارا، روز آرامی داشته باشی</h1>
-          <p>اینجا می‌توانی مسائل همسایگی را محرمانه ثبت و تا رسیدن به نتیجه پیگیری کنی.</p>
-        </div>
-        <div className="privacy-chip"><ShieldCheck size={19} /><span><strong>محرمانگی کامل</strong><small>اطلاعات شما امن می‌ماند</small></span></div>
-      </section>
-
-      <section className="action-hero">
-        <div className="hero-content">
-          <span className="hero-kicker"><span /> سریع، امن و بدون تنش</span>
-          <h2>آرامش خانه، حق شماست.</h2>
-          <p>اگر رفتار آزاردهنده‌ای در ساختمان یا محله تکرار شده، گزارش خود را ثبت کنید تا از مسیر درست پیگیری شود.</p>
-          <button className="light-action-btn" onClick={openReport}><Plus size={20} /> ثبت گزارش جدید <ArrowLeft size={18} /></button>
-          <span className="hero-footnote"><LockKeyhole size={14} /> امکان ثبت گزارش به‌صورت ناشناس</span>
-        </div>
-        <div className="hero-visual" aria-hidden="true">
-          <div className="building building-back">
-            <span /><span /><span /><span /><span /><span />
           </div>
-          <div className="building building-front">
-            <span /><span /><span /><span />
-            <div className="building-door" />
-          </div>
-          <div className="tree"><i /><b /></div>
-          <div className="calm-badge"><ShieldCheck size={20} /><span>پیگیری امن</span></div>
-          <div className="ground-line" />
-        </div>
-      </section>
+          <a className="hero__scroll" href="#categories" aria-label="رفتن به بخش بعد"><span>کشف کنید</span><ChevronDown size={18} /></a>
+        </section>
 
-      <section className="stats-grid" aria-label="آمار گزارش‌ها">
-        <StatCard title="در حال بررسی" value={counts.reviewing} Icon={Clock3} tone="amber" note="میانگین پاسخ: ۲ روز" />
-        <StatCard title="پاسخ داده شده" value={counts.answered} Icon={MessageCircleMore} tone="blue" note="نیازمند مشاهده شما" />
-        <StatCard title="مختومه" value={counts.resolved} Icon={CheckCircle2} tone="green" note="با رضایت شما بسته شده" />
-      </section>
-
-      <div className="dashboard-grid">
-        <section className="panel recent-panel">
-          <div className="section-heading">
-            <div><h3>آخرین گزارش‌ها</h3><p>وضعیت پیگیری درخواست‌های اخیر شما</p></div>
-            <button className="text-btn" onClick={() => navigate('reports')}>مشاهده همه <ArrowLeft size={16} /></button>
-          </div>
-          <div className="report-list compact-list">
-            {recentReports.map((report) => <ReportRow key={report.id} report={report} onClick={() => navigate('reports')} />)}
+        <section className="trust-strip" aria-label="مزایای خرید از دوام">
+          <div className="container trust-strip__grid">
+            <article><span><BadgeCheck size={23} /></span><div><strong>اصالت تضمین‌شده</strong><small>گواهی اصالت برای تمام مدل‌ها</small></div></article>
+            <article><span><Truck size={23} /></span><div><strong>ارسال امن و رایگان</strong><small>بسته‌بندی ویژه به سراسر ایران</small></div></article>
+            <article><span><RotateCcw size={23} /></span><div><strong>۷ روز فرصت تعویض</strong><small>خرید آسوده و بدون دغدغه</small></div></article>
+            <article><span><Headphones size={23} /></span><div><strong>مشاوره تخصصی</strong><small>همراهی ساعت‌شناس‌های دوام</small></div></article>
           </div>
         </section>
 
-        <aside className="panel help-panel">
-          <div className="help-icon"><Headphones size={23} /></div>
-          <h3>نیاز به راهنمایی دارید؟</h3>
-          <p>کارشناسان ما برای انتخاب بهترین مسیر پیگیری کنار شما هستند.</p>
-          <div className="support-hours"><Clock3 size={16} /><span>شنبه تا پنجشنبه، ۸ تا ۲۰</span></div>
-          <button className="outline-btn full-btn" onClick={() => navigate('support')}>گفتگو با پشتیبان</button>
-        </aside>
-      </div>
-
-      <section className="soft-tip">
-        <span className="tip-icon"><CircleHelp size={21} /></span>
-        <div><strong>قبل از ثبت گزارش</strong><p>اگر امکان گفت‌وگوی محترمانه و امن وجود دارد، یک گفت‌وگوی کوتاه می‌تواند سریع‌ترین راه‌حل باشد. در شرایط پرتنش، مستقیماً گزارش ثبت کنید.</p></div>
-        <button onClick={() => navigate('guide')}>مطالعه راهنمای گفت‌وگو <ChevronLeft size={17} /></button>
-      </section>
-    </div>
-  );
-}
-
-function StatCard({ title, value, Icon, tone, note }) {
-  return (
-    <article className="stat-card">
-      <span className={`stat-icon ${tone}`}><Icon size={21} /></span>
-      <div className="stat-copy"><span>{title}</span><strong>{toPersianDigits(value)}</strong><small>{note}</small></div>
-    </article>
-  );
-}
-
-function TypeIcon({ type, size = 20 }) {
-  const found = reportTypes.find((item) => item.id === type) || reportTypes[4];
-  const Icon = found.Icon;
-  return <span className={`type-icon ${found.color}`}><Icon size={size} /></span>;
-}
-
-function StatusBadge({ status }) {
-  const value = statusMap[status] || statusMap.reviewing;
-  return <span className={`status-badge ${value.className}`}><i />{value.label}</span>;
-}
-
-function ReportRow({ report, onClick, expanded = false, onToggle }) {
-  return (
-    <article className={`report-row ${expanded ? 'expanded' : ''}`}>
-      <button className="report-row-main" onClick={onToggle || onClick}>
-        <TypeIcon type={report.type} />
-        <span className="report-summary">
-          <strong>{report.title}</strong>
-          <small><span>#{report.id}</span><i />{report.date}<i />{report.place}</small>
-        </span>
-        <StatusBadge status={report.status} />
-        <ChevronLeft className="row-chevron" size={18} />
-      </button>
-      {expanded && (
-        <div className="report-details">
-          <p>{report.description}</p>
-          <div className="detail-meta">
-            <span><Clock3 size={15} /> ساعت ثبت: {report.time}</span>
-            <span><MessageCircleMore size={15} /> {toPersianDigits(report.updates)} به‌روزرسانی</span>
-          </div>
-          <div className="mini-timeline">
-            <span className="done"><Check size={13} /></span><p><strong>گزارش ثبت شد</strong><small>{report.date}، ساعت {report.time}</small></p>
-            <span className={report.status !== 'reviewing' ? 'done' : 'current'}>{report.status !== 'reviewing' ? <Check size={13} /> : <Clock3 size={13} />}</span><p><strong>{report.status === 'reviewing' ? 'در انتظار نتیجه بررسی' : 'بررسی توسط مدیر ساختمان'}</strong><small>{report.status === 'reviewing' ? 'به‌زودی اطلاع‌رسانی می‌شود' : 'نتیجه برای شما ارسال شده است'}</small></p>
-          </div>
-        </div>
-      )}
-    </article>
-  );
-}
-
-function ReportsPage({ reports, loading, closeReport, openReport, showToast }) {
-  const [filter, setFilter] = useState('all');
-  const [search, setSearch] = useState('');
-  const [expandedId, setExpandedId] = useState(reports[0]?.id || null);
-  const [closingId, setClosingId] = useState(null);
-  const filtered = reports.filter((report) => {
-    const matchesFilter = filter === 'all' || report.status === filter;
-    const matchesSearch = !search || `${report.title} ${report.id} ${report.place}`.includes(search);
-    return matchesFilter && matchesSearch;
-  });
-
-  const handleCloseReport = async (id) => {
-    setClosingId(id);
-    try {
-      await closeReport(id);
-    } catch (error) {
-      showToast(`تغییر وضعیت انجام نشد: ${error.message}`);
-    } finally {
-      setClosingId(null);
-    }
-  };
-
-  return (
-    <div className="reports-page page-enter">
-      <div className="page-heading-row">
-        <div><span className="eyebrow"><ClipboardList size={16} /> بایگانی امن شما</span><h1>گزارش‌های من</h1><p>همه گزارش‌ها و به‌روزرسانی‌های آن‌ها را یک‌جا ببینید.</p></div>
-        <button className="primary-btn" onClick={openReport}><Plus size={19} /> گزارش جدید</button>
-      </div>
-
-      <div className="report-toolbar panel">
-        <div className="search-box"><Search size={19} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="جست‌وجو در عنوان یا کد گزارش..." /></div>
-        <div className="filter-tabs">
-          {[
-            ['all', 'همه'], ['reviewing', 'در حال بررسی'], ['answered', 'پاسخ داده شده'], ['resolved', 'مختومه'],
-          ].map(([id, label]) => <button key={id} className={filter === id ? 'active' : ''} onClick={() => setFilter(id)}>{label}</button>)}
-        </div>
-        <button className="filter-icon-btn" title="فیلترها"><SlidersHorizontal size={19} /></button>
-      </div>
-
-      <section className="panel reports-container">
-        <div className="reports-count"><strong>{toPersianDigits(filtered.length)} گزارش</strong><span>مرتب‌سازی: جدیدترین</span></div>
-        <div className="report-list full-list">
-          {loading ? (
-            <div className="empty-state"><span className="loading-spinner" /><h3>در حال دریافت گزارش‌ها</h3><p>اطلاعات مستقیماً از Supabase خوانده می‌شود.</p></div>
-          ) : filtered.length ? filtered.map((report) => (
-            <div key={report.id}>
-              <ReportRow report={report} expanded={expandedId === report.id} onToggle={() => setExpandedId((id) => id === report.id ? null : report.id)} />
-              {expandedId === report.id && report.status !== 'resolved' && (
-                <div className="report-actions-inline">
-                  <button className="outline-btn" onClick={() => showToast('پیام شما برای پشتیبانی ارسال شد')}><MessageCircleMore size={16} /> ارسال پیام</button>
-                  <button className="quiet-btn" disabled={closingId === report.id} onClick={() => handleCloseReport(report.id)}><CheckCircle2 size={16} /> {closingId === report.id ? 'در حال ذخیره…' : 'مشکل برطرف شده'}</button>
-                </div>
-              )}
+        <section className="section categories-section" id="categories">
+          <div className="container">
+            <div className="section-heading" data-reveal>
+              <div><span className="kicker">برای هر سبک، یک انتخاب</span><h2>ساعتی که شبیه شماست</h2></div>
+              <p>از ظرافت کلاسیک تا جسارت معاصر؛ کالکشن‌های دوام برای ریتم‌های متفاوت زندگی انتخاب شده‌اند.</p>
             </div>
-          )) : (
-            <div className="empty-state"><Search size={28} /><h3>گزارشی پیدا نشد</h3><p>عبارت دیگری را جست‌وجو کنید یا فیلتر را تغییر دهید.</p></div>
-          )}
-        </div>
-      </section>
-    </div>
-  );
-}
-
-function GuidePage({ navigate }) {
-  const guides = [
-    { Icon: MessageCircleMore, title: 'گفت‌وگوی بدون تنش', text: 'چطور موضوع را محترمانه و شفاف با همسایه مطرح کنیم؟', time: '۵ دقیقه' },
-    { Icon: Volume2, title: 'قوانین سر و صدا', text: 'ساعات استراحت و حدود متعارف صدای ساختمان چیست؟', time: '۷ دقیقه' },
-    { Icon: CarFront, title: 'پارکینگ و حقوق ساکنان', text: 'درباره پارک مزاحم، جای پارک و مسیر عبور بیشتر بدانید.', time: '۶ دقیقه' },
-    { Icon: Building2, title: 'استفاده از مشاعات', text: 'قوانین راهرو، پشت‌بام، حیاط و آسانسور به زبان ساده.', time: '۸ دقیقه' },
-  ];
-  return (
-    <div className="guide-page page-enter">
-      <div className="page-heading-row"><div><span className="eyebrow"><BookOpen size={16} /> دانستن، آغاز حل مسئله است</span><h1>راهنمای همسایگی</h1><p>پاسخ‌های کوتاه و کاربردی برای موقعیت‌های متداول ساختمان.</p></div></div>
-      <section className="guide-feature panel">
-        <div><span>پیشنهاد امروز</span><h2>قبل از گلایه، چطور یک گفت‌وگوی مؤثر داشته باشیم؟</h2><p>زمان مناسب را انتخاب کنید، از توصیف رفتار به‌جای قضاوت فرد استفاده کنید و برای رسیدن به راه‌حل مشترک فرصت بدهید.</p><button className="primary-btn" onClick={() => navigate('support')}>از مشاور بپرسید <ArrowLeft size={17} /></button></div>
-        <div className="conversation-art" aria-hidden="true"><span className="bubble one">سلام، وقتتون بخیر...</span><span className="bubble two">حتماً، ممنون که گفتید</span><div className="people"><i /><i /></div></div>
-      </section>
-      <div className="guide-grid">
-        {guides.map(({ Icon, title, text, time }) => (
-          <button className="guide-card panel" key={title} onClick={() => navigate('support')}>
-            <span><Icon size={22} /></span><h3>{title}</h3><p>{text}</p><small><Clock3 size={14} /> مطالعه در {time}</small><ArrowLeft className="guide-arrow" size={18} />
-          </button>
-        ))}
-      </div>
-      <section className="legal-note"><ShieldCheck size={23} /><div><strong>یادآوری مهم</strong><p>محتوای این بخش برای آگاهی عمومی است و جایگزین مشاوره حقوقی تخصصی نیست.</p></div></section>
-    </div>
-  );
-}
-
-function SupportPage({ showToast }) {
-  const [message, setMessage] = useState('');
-  const submit = (e) => {
-    e.preventDefault();
-    if (!message.trim()) return;
-    setMessage('');
-    showToast('پیام شما ارسال شد؛ به‌زودی پاسخ می‌دهیم');
-  };
-  return (
-    <div className="support-page page-enter">
-      <div className="page-heading-row"><div><span className="eyebrow"><Headphones size={16} /> ما کنار شما هستیم</span><h1>پشتیبانی و مشاوره</h1><p>پرسش خود را محرمانه با کارشناسان همسایه‌یار در میان بگذارید.</p></div></div>
-      <div className="support-layout">
-        <form className="panel support-form" onSubmit={submit}>
-          <div className="section-heading"><div><h3>پیام جدید</h3><p>معمولاً کمتر از دو ساعت پاسخ می‌دهیم.</p></div><span className="online-dot">آنلاین</span></div>
-          <label>موضوع پیام<select defaultValue="advice"><option value="advice">راهنمایی برای ثبت گزارش</option><option value="follow">پیگیری گزارش موجود</option><option value="legal">پرسش حقوقی</option><option value="technical">مشکل فنی</option></select></label>
-          <label>پیام شما<textarea rows="7" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="موضوع را با جزئیات برای ما بنویسید..." /></label>
-          <div className="form-footer"><button type="button" className="attachment-btn"><Paperclip size={17} /> پیوست فایل</button><button className="primary-btn" disabled={!message.trim()}>ارسال پیام <ArrowLeft size={17} /></button></div>
-        </form>
-        <aside className="support-side">
-          <div className="panel contact-card"><span className="contact-icon"><PhoneCall size={22} /></span><h3>ترجیح می‌دهید تماس بگیرید؟</h3><p>کارشناسان پاسخ‌گویی آماده شنیدن صدای شما هستند.</p><a href="tel:02191001010">۰۲۱-۹۱۰۰۱۰۱۰</a><small>شنبه تا پنجشنبه، ساعت ۸ تا ۲۰</small></div>
-          <div className="panel faq-card"><h3>پرسش‌های پرتکرار</h3><button>آیا هویت من برای همسایه نمایش داده می‌شود؟<ChevronLeft size={17} /></button><button>پیگیری گزارش چقدر زمان می‌برد؟<ChevronLeft size={17} /></button><button>چطور مدرک به گزارش اضافه کنم؟<ChevronLeft size={17} /></button></div>
-        </aside>
-      </div>
-    </div>
-  );
-}
-
-function SettingsPage({ showToast }) {
-  const [anonymous, setAnonymous] = useState(true);
-  const [notify, setNotify] = useState(true);
-  const [sms, setSms] = useState(false);
-  return (
-    <div className="settings-page page-enter">
-      <div className="page-heading-row"><div><span className="eyebrow"><Settings size={16} /> انتخاب‌های شما</span><h1>تنظیمات</h1><p>حریم خصوصی و روش دریافت اعلان‌ها را مدیریت کنید.</p></div></div>
-      <section className="panel settings-panel">
-        <div className="settings-section"><div className="settings-title"><ShieldCheck size={20} /><div><h3>حریم خصوصی</h3><p>نحوه نمایش اطلاعات شما هنگام ثبت گزارش</p></div></div><ToggleRow title="ثبت ناشناس به‌صورت پیش‌فرض" text="نام و شماره واحد شما برای طرف گزارش نمایش داده نمی‌شود." value={anonymous} setValue={setAnonymous} /></div>
-        <div className="settings-section"><div className="settings-title"><Bell size={20} /><div><h3>اعلان‌ها</h3><p>به‌روزرسانی گزارش‌ها را چگونه دریافت می‌کنید</p></div></div><ToggleRow title="اعلان داخل برنامه" text="هر پاسخ یا تغییر وضعیت را در برنامه ببینید." value={notify} setValue={setNotify} /><ToggleRow title="پیامک" text="به‌روزرسانی‌های مهم به شماره همراه شما ارسال شود." value={sms} setValue={setSms} /></div>
-        <div className="settings-save"><button className="primary-btn" onClick={() => showToast('تنظیمات با موفقیت ذخیره شد')}>ذخیره تغییرات</button></div>
-      </section>
-    </div>
-  );
-}
-
-function ToggleRow({ title, text, value, setValue }) {
-  return <div className="toggle-row"><div><strong>{title}</strong><p>{text}</p></div><button className={`toggle ${value ? 'on' : ''}`} onClick={() => setValue(!value)} aria-pressed={value}><span /></button></div>;
-}
-
-function MobileBottomNav({ activePage, navigate, openReport }) {
-  return (
-    <nav className="mobile-bottom-nav" aria-label="منوی پایین">
-      <button className={activePage === 'dashboard' ? 'active' : ''} onClick={() => navigate('dashboard')}><Home size={20} /><span>خانه</span></button>
-      <button className={activePage === 'reports' ? 'active' : ''} onClick={() => navigate('reports')}><FileText size={20} /><span>گزارش‌ها</span></button>
-      <button className="mobile-add" onClick={openReport} aria-label="ثبت گزارش"><Plus size={25} /></button>
-      <button className={activePage === 'guide' ? 'active' : ''} onClick={() => navigate('guide')}><BookOpen size={20} /><span>راهنما</span></button>
-      <button className={activePage === 'support' ? 'active' : ''} onClick={() => navigate('support')}><Headphones size={20} /><span>پشتیبانی</span></button>
-    </nav>
-  );
-}
-
-function ReportWizard({ onClose, onSubmit }) {
-  const [step, setStep] = useState(1);
-  const [selectedType, setSelectedType] = useState('');
-  const [description, setDescription] = useState('');
-  const [place, setPlace] = useState('');
-  const [date, setDate] = useState('۱۴۰۵/۰۵/۲۵');
-  const [time, setTime] = useState('');
-  const [severity, setSeverity] = useState('medium');
-  const [anonymous, setAnonymous] = useState(true);
-  const [evidenceFile, setEvidenceFile] = useState(null);
-  const [submittedId, setSubmittedId] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-
-  useEffect(() => {
-    const onKey = (event) => event.key === 'Escape' && onClose();
-    window.addEventListener('keydown', onKey);
-    document.body.classList.add('modal-open');
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      document.body.classList.remove('modal-open');
-    };
-  }, [onClose]);
-
-  const nextDisabled = step === 1 ? !selectedType : step === 2 ? !description.trim() || !place.trim() : false;
-
-  const submit = async () => {
-    const selected = reportTypes.find((item) => item.id === selectedType) || reportTypes[4];
-    setSubmitting(true);
-    setSubmitError('');
-    try {
-      const saved = await onSubmit({
-        type: selectedType,
-        title: selected.title,
-        date: date || null,
-        time: time || null,
-        place,
-        description,
-        anonymous,
-        severity,
-        evidenceFile,
-      });
-      setSubmittedId(`HY-${saved.id.slice(0, 8).toUpperCase()}`);
-      setStep(4);
-    } catch (error) {
-      setSubmitError(`ثبت گزارش انجام نشد: ${error.message}`);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <section className="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title">
-        <header className="modal-header">
-          <div><span className="modal-icon"><FileText size={20} /></span><div><h2 id="report-title">ثبت گزارش جدید</h2><p>{step < 4 ? 'اطلاعات شما محرمانه نگهداری می‌شود' : 'گزارش با موفقیت ثبت شد'}</p></div></div>
-          <button className="icon-btn" onClick={onClose} aria-label="بستن"><X size={21} /></button>
-        </header>
-
-        {step < 4 && (
-          <div className="stepper">
-            {[
-              [1, 'نوع مزاحمت'], [2, 'جزئیات'], [3, 'بازبینی'],
-            ].map(([number, label], index) => (
-              <div className={`step ${step >= number ? 'active' : ''} ${step > number ? 'done' : ''}`} key={number}>
-                <span>{step > number ? <Check size={14} /> : toPersianDigits(number)}</span><small>{label}</small>{index < 2 && <i />}
-              </div>
-            ))}
+            <div className="category-grid">
+              {categories.map((category, index) => (
+                <button
+                  className={`category-card category-card--${index + 1}`}
+                  key={category.id}
+                  onClick={() => selectCategory(category.id)}
+                  data-reveal
+                >
+                  <img src={category.image} alt="" />
+                  <span className="category-card__overlay" />
+                  <span className="category-card__count">{category.count}</span>
+                  <span className="category-card__copy">
+                    <small>{category.caption}</small>
+                    <strong>{category.title}</strong>
+                    <i>مشاهده مدل‌ها <ArrowUpLeft size={17} /></i>
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
-        )}
+        </section>
 
-        <div className="modal-body">
-          {step === 1 && (
-            <div className="wizard-step page-enter">
-              <div className="wizard-title"><h3>چه نوع مزاحمتی رخ داده؟</h3><p>نزدیک‌ترین گزینه را انتخاب کنید.</p></div>
-              <div className="type-grid">
-                {reportTypes.map(({ id, title, hint, Icon, color }) => (
-                  <button key={id} className={`type-option ${selectedType === id ? 'selected' : ''}`} onClick={() => setSelectedType(id)}>
-                    <span className={`type-icon ${color}`}><Icon size={21} /></span><span><strong>{title}</strong><small>{hint}</small></span><i className="radio-dot">{selectedType === id && <span />}</i>
-                  </button>
+        <section className="section product-section" id="collection">
+          <div className="container">
+            <div className="product-heading" data-reveal>
+              <div><span className="kicker">انتخاب‌های این ماه</span><h2>محبوب‌های دوام</h2></div>
+              <div className="filter-tabs" role="tablist" aria-label="فیلتر ساعت‌ها">
+                {[
+                  ['all', 'همه'],
+                  ['men', 'مردانه'],
+                  ['women', 'زنانه'],
+                  ['automatic', 'اتوماتیک'],
+                  ['unisex', 'یونیسکس'],
+                ].map(([id, label]) => (
+                  <button key={id} className={activeFilter === id ? 'active' : ''} onClick={() => setActiveFilter(id)} role="tab" aria-selected={activeFilter === id}>{label}</button>
                 ))}
               </div>
-              <div className="privacy-note"><ShieldCheck size={18} /><p><strong>فضای امن شما</strong> طرف گزارش به اطلاعات تماس و هویت شما دسترسی نخواهد داشت.</p></div>
             </div>
-          )}
 
-          {step === 2 && (
-            <div className="wizard-step page-enter">
-              <div className="wizard-title"><h3>کمی بیشتر توضیح دهید</h3><p>جزئیات دقیق به بررسی سریع‌تر کمک می‌کند.</p></div>
-              <div className="form-grid">
-                <label className="full-field">شرح اتفاق <span>ضروری</span><textarea autoFocus rows="4" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="چه اتفاقی افتاد؟ آیا قبلاً هم تکرار شده است؟" /><small className="char-count">{toPersianDigits(description.length)} / ۵۰۰</small></label>
-                <label className="full-field">محل وقوع <span>ضروری</span><div className="input-with-icon"><MapPin size={18} /><input value={place} onChange={(e) => setPlace(e.target.value)} placeholder="مثلاً واحد ۴ یا پارکینگ ساختمان" /></div></label>
-                <label>تاریخ<div className="input-with-icon"><CalendarDays size={18} /><input value={date} onChange={(e) => setDate(e.target.value)} /></div></label>
-                <label>ساعت<div className="input-with-icon"><Clock3 size={18} /><input value={time} onChange={(e) => setTime(e.target.value)} placeholder="مثلاً ۲۳:۳۰" /></div></label>
-                <fieldset className="severity-field full-field"><legend>شدت مزاحمت</legend><div className="severity-options">{[['low', 'کم'], ['medium', 'متوسط'], ['high', 'زیاد']].map(([id, label]) => <button type="button" key={id} className={severity === id ? `active ${id}` : ''} onClick={() => setSeverity(id)}>{label}</button>)}</div></fieldset>
-                <div className="upload-box full-field"><input type="file" id="evidence" hidden accept="image/*,audio/*,.pdf" onChange={(event) => setEvidenceFile(event.target.files?.[0] || null)} /><label htmlFor="evidence"><UploadCloud size={21} /><span><strong>{evidenceFile ? evidenceFile.name : 'افزودن تصویر، صدا یا PDF'}</strong><small>{evidenceFile ? 'فایل هنگام ثبت در فضای خصوصی آپلود می‌شود' : 'حداکثر ۱۰ مگابایت (اختیاری)'}</small></span>{evidenceFile && <CheckCircle2 className="upload-check" size={20} />}</label></div>
-              </div>
+            <div className="product-grid">
+              {visibleProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  favorite={favorites.includes(product.id)}
+                  onFavorite={() => toggleFavorite(product.id)}
+                  onQuickView={() => setQuickProduct(product)}
+                  onAdd={() => addToCart(product)}
+                />
+              ))}
             </div>
-          )}
+            <div className="collection-footer" data-reveal>
+              <span>نمایش {new Intl.NumberFormat('fa-IR').format(visibleProducts.length)} مدل منتخب</span>
+              <button onClick={() => { setActiveFilter('all'); setToast('تمام مدل‌های موجود نمایش داده شد'); }}>مشاهده تمام ساعت‌ها <ArrowLeft size={17} /></button>
+            </div>
+          </div>
+        </section>
 
-          {step === 3 && (
-            <div className="wizard-step page-enter review-step">
-              <div className="wizard-title"><h3>همه‌چیز درست است؟</h3><p>پیش از ثبت نهایی، اطلاعات گزارش را بررسی کنید.</p></div>
-              <div className="review-card">
-                <div className="review-type"><TypeIcon type={selectedType} size={22} /><div><small>نوع مزاحمت</small><strong>{reportTypes.find((x) => x.id === selectedType)?.title}</strong></div><button onClick={() => setStep(1)}>ویرایش</button></div>
-                <div className="review-description"><small>شرح اتفاق</small><p>{description}</p></div>
-                <div className="review-meta"><span><MapPin size={16} /><small>محل</small><strong>{place}</strong></span><span><CalendarDays size={16} /><small>زمان</small><strong>{date}، {time || 'زمان ثبت'}</strong></span></div>
-              </div>
-              <div className="anonymous-row"><div><span className="anonymous-icon"><LockKeyhole size={19} /></span><div><strong>ثبت به‌صورت ناشناس</strong><p>هویت و شماره واحد شما نمایش داده نشود.</p></div></div><button className={`toggle ${anonymous ? 'on' : ''}`} onClick={() => setAnonymous(!anonymous)}><span /></button></div>
-              {submitError && <div className="auth-alert error" role="alert">{submitError}</div>}
-              <label className="confirm-check"><input type="checkbox" defaultChecked /><span><Check size={13} /></span><p>تأیید می‌کنم اطلاعات واردشده تا حد امکان دقیق و مطابق واقعیت است.</p></label>
+        <section className="editorial-section" id="story">
+          <div className="container editorial" data-reveal>
+            <div className="editorial__image">
+              <img src={silverImage} alt="ساعت مینیمال سپهر از گالری دوام" />
+              <span className="editorial__label"><b>DAVAM</b><small>EST. 2016</small></span>
             </div>
-          )}
+            <div className="editorial__content">
+              <span className="kicker kicker--light">داستان دوام</span>
+              <h2>یک ساعت خوب،<br />فقط زمان را نشان نمی‌دهد.</h2>
+              <p>از سال ۱۳۹۵، دوام با یک باور ساده شکل گرفت: ساعت باید بخشی از روایت شخصی شما باشد. هر مدل را بر اساس کیفیت ساخت، اصالت طراحی و امکان همراهی طولانی‌مدت انتخاب می‌کنیم.</p>
+              <blockquote>«چیزهایی را انتخاب کنید که با گذشت زمان، ارزشمندتر می‌شوند.»</blockquote>
+              <a href="#services">بیشتر درباره‌ی ما <ArrowLeft size={17} /></a>
+            </div>
+          </div>
+        </section>
 
-          {step === 4 && (
-            <div className="success-step page-enter">
-              <span className="success-icon"><CheckCircle2 size={42} /></span>
-              <h3>گزارش شما ثبت شد</h3>
-              <p>از اعتمادتان ممنونیم. نتیجه بررسی از طریق اعلان‌های برنامه به شما اطلاع داده می‌شود.</p>
-              <div className="tracking-code"><span>کد پیگیری</span><strong>{submittedId}</strong></div>
-              <div className="success-info"><Clock3 size={18} /><span><strong>زمان تقریبی بررسی</strong><small>۱ تا ۲ روز کاری</small></span></div>
-              <button className="primary-btn full-btn" onClick={onClose}>مشاهده گزارش‌ها</button>
+        <section className="section craft-section" id="services">
+          <div className="container craft-layout">
+            <div className="craft-intro" data-reveal>
+              <span className="kicker">فراتر از یک خرید</span>
+              <h2>همراهی ما، از انتخاب تا سال‌ها بعد</h2>
+              <p>تجربه‌ی دوام با تحویل ساعت تمام نمی‌شود. ساعت‌شناس‌های ما برای تنظیم، نگهداری و سرویس دوره‌ای کنار شما هستند.</p>
+              <a className="text-link" href="tel:02188776654">رزرو مشاوره رایگان <ArrowLeft size={17} /></a>
             </div>
-          )}
+            <div className="craft-features">
+              <article data-reveal><span>۰۱</span><Watch size={27} /><h3>تنظیم پیش از ارسال</h3><p>کنترل عملکرد، تنظیم دقیق و بررسی ظاهری توسط کارشناس.</p></article>
+              <article data-reveal><span>۰۲</span><Gem size={27} /><h3>بسته‌بندی امضای دوام</h3><p>جعبه‌ی ویژه، کارت اصالت و امکان آماده‌سازی برای هدیه.</p></article>
+              <article data-reveal><span>۰۳</span><PackageCheck size={27} /><h3>پشتیبانی واقعی</h3><p>یادآوری سرویس و دسترسی مستقیم به تیم خدمات پس از فروش.</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section className="journal-section" id="journal">
+          <div className="container journal" data-reveal>
+            <div className="journal__content">
+              <span className="kicker kicker--light">راهنمای دوام</span>
+              <h2>اولین ساعت اتوماتیک خود را چطور انتخاب کنیم؟</h2>
+              <p>از اندازه‌ی قاب و نوع موتور تا سبک زندگی؛ پنج نکته‌ی ساده برای انتخابی که سال‌ها دوستش داشته باشید.</p>
+              <button onClick={() => setToast('مقاله راهنمای خرید به‌زودی منتشر می‌شود')}>مطالعه راهنما <ArrowLeft size={18} /></button>
+            </div>
+            <div className="journal__watch" aria-hidden="true">
+              <span className="watch-orbit" />
+              <img src={azadiImage} alt="" />
+            </div>
+          </div>
+        </section>
+
+        <section className="newsletter-section">
+          <div className="container newsletter" data-reveal>
+            <div><span><Sparkles size={18} /></span><div><h2>باشگاه خصوصی دوام</h2><p>از معرفی مدل‌های محدود، رویدادها و پیشنهادهای اختصاصی زودتر باخبر شوید.</p></div></div>
+            <form onSubmit={submitNewsletter}>
+              <label className="sr-only" htmlFor="newsletter-email">ایمیل شما</label>
+              <input id="newsletter-email" type="email" value={newsletter} onChange={(event) => setNewsletter(event.target.value)} placeholder="ایمیل شما" required />
+              <button aria-label="عضویت در خبرنامه"><Send size={18} /><span>عضویت</span></button>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer className="site-footer">
+        <div className="container footer-main">
+          <div className="footer-about">
+            <Brand light />
+            <p>گالری تخصصی ساعت‌های اصیل؛ انتخاب‌شده برای ماندن در لحظه‌های مهم شما.</p>
+            <div className="footer-socials">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="اینستاگرام"><Instagram size={19} /></a>
+              <a href="tel:02188776654" aria-label="تماس با دوام"><Phone size={18} /></a>
+            </div>
+          </div>
+          <div className="footer-links"><h3>فروشگاه</h3><a href="#collection">ساعت مردانه</a><a href="#collection">ساعت زنانه</a><a href="#collection">ساعت اتوماتیک</a><a href="#collection">جدیدترین‌ها</a></div>
+          <div className="footer-links"><h3>خدمات مشتریان</h3><a href="#services">راهنمای انتخاب</a><a href="#services">شرایط ارسال</a><a href="#services">گارانتی و اصالت</a><a href="#services">درخواست سرویس</a></div>
+          <div className="footer-contact"><h3>گالری دوام</h3><p><MapPin size={17} />تهران، بلوار میرداماد، مرکز خرید آرین، طبقه دوم</p><a href="tel:02188776654"><Phone size={17} /><span dir="ltr">021 8877 6654</span></a><p><Clock3 size={17} />شنبه تا پنج‌شنبه، ۱۰ تا ۲۱</p></div>
         </div>
+        <div className="container footer-bottom"><span>© ۱۴۰۵ گالری ساعت دوام — تمامی حقوق محفوظ است.</span><div><a href="#top">حریم خصوصی</a><a href="#top">قوانین خرید</a><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>بازگشت به بالا <ChevronRight size={15} /></button></div></div>
+      </footer>
 
-        {step < 4 && (
-          <footer className="modal-footer">
-            <button className="quiet-btn" onClick={step === 1 ? onClose : () => setStep(step - 1)}>{step === 1 ? 'انصراف' : <><ArrowRight size={17} /> مرحله قبل</>}</button>
-            <button className="primary-btn" disabled={nextDisabled || submitting} onClick={step === 3 ? submit : () => setStep(step + 1)}>{step === 3 ? <><Check size={18} /> {submitting ? 'در حال آپلود و ثبت…' : 'ثبت نهایی گزارش'}</> : <>ادامه <ArrowLeft size={17} /></>}</button>
-          </footer>
+      <button className="floating-support" onClick={() => setToast('کارشناسان دوام آماده‌ی راهنمایی شما هستند')} aria-label="گفت‌وگو با کارشناس">
+        <Headphones size={21} /><span>مشاوره خرید</span>
+      </button>
+
+      {menuOpen && <MobileMenu onClose={() => setMenuOpen(false)} onSearch={() => { setMenuOpen(false); setSearchOpen(true); }} cartCount={cartCount} onCart={() => { setMenuOpen(false); setCartOpen(true); }} />}
+      {searchOpen && <SearchOverlay query={searchQuery} setQuery={setSearchQuery} results={searchResults} onClose={() => setSearchOpen(false)} onSelect={(product) => { setSearchOpen(false); setQuickProduct(product); }} />}
+      {cartOpen && <CartDrawer items={cartItems} total={cartTotal} onClose={() => setCartOpen(false)} onUpdate={updateQuantity} onCheckout={() => setToast('سبد شما آماده است؛ اتصال درگاه پرداخت در مرحله بعد انجام می‌شود')} onBrowse={() => { setCartOpen(false); document.getElementById('collection')?.scrollIntoView({ behavior: 'smooth' }); }} />}
+      {quickProduct && <QuickView product={quickProduct} favorite={favorites.includes(quickProduct.id)} onFavorite={() => toggleFavorite(quickProduct.id)} onClose={() => setQuickProduct(null)} onAdd={(quantity) => { addToCart(quickProduct, quantity); setQuickProduct(null); setCartOpen(true); }} />}
+
+      {toast && <div className="toast" role="status"><span><BadgeCheck size={18} /></span>{toast}</div>}
+    </div>
+  );
+}
+
+function ProductCard({ product, favorite, onFavorite, onQuickView, onAdd }) {
+  return (
+    <article className="product-card" data-reveal>
+      <div className="product-card__media">
+        <button className={`favorite-button ${favorite ? 'active' : ''}`} onClick={onFavorite} aria-label={favorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}><Heart size={19} fill={favorite ? 'currentColor' : 'none'} /></button>
+        <span className="product-badge">{product.badge}</span>
+        <button className="product-card__image" onClick={onQuickView} aria-label={`مشاهده ${product.name}`}><img src={product.image} alt={`ساعت ${product.name} از ${product.collection}`} loading="lazy" /></button>
+        <div className="product-card__quick">
+          <button onClick={onQuickView}>مشاهده سریع</button>
+          <button onClick={onAdd} aria-label="افزودن به سبد"><ShoppingBag size={18} /></button>
+        </div>
+      </div>
+      <div className="product-card__info">
+        <div className="product-card__meta"><span>{product.collection}</span><span><Star size={13} fill="currentColor" /> {product.rating}</span></div>
+        <button className="product-card__title" onClick={onQuickView}><h3>دوام «{product.name}»</h3><small dir="ltr">{product.latinName}</small></button>
+        <div className="product-card__price"><strong>{formatPrice(product.price)}</strong>{product.oldPrice && <del>{formatPrice(product.oldPrice)}</del>}</div>
+      </div>
+    </article>
+  );
+}
+
+function MobileMenu({ onClose, onSearch, cartCount, onCart }) {
+  return (
+    <div className="overlay overlay--menu" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <aside className="mobile-menu" role="dialog" aria-modal="true" aria-label="منوی اصلی">
+        <div className="mobile-menu__head"><Brand onClick={onClose} /><button className="close-button" onClick={onClose} aria-label="بستن منو"><X size={21} /></button></div>
+        <button className="mobile-search" onClick={onSearch}><Search size={19} /> جست‌وجوی ساعت و کالکشن <ArrowLeft size={16} /></button>
+        <nav>{navLinks.map(([id, label]) => <a key={id} href={`#${id}`} onClick={onClose}>{label}<ChevronLeft size={17} /></a>)}</nav>
+        <div className="mobile-menu__actions"><button onClick={onCart}><ShoppingBag size={19} /> سبد خرید <span>{new Intl.NumberFormat('fa-IR').format(cartCount)}</span></button><button><CircleUserRound size={19} /> باشگاه مشتریان</button></div>
+        <a className="mobile-menu__phone" href="tel:02188776654"><span><Headphones size={20} /></span><div><small>مشاوره انتخاب ساعت</small><strong dir="ltr">021 8877 6654</strong></div></a>
+      </aside>
+    </div>
+  );
+}
+
+function SearchOverlay({ query, setQuery, results, onClose, onSelect }) {
+  return (
+    <div className="search-overlay" role="dialog" aria-modal="true" aria-labelledby="search-title">
+      <div className="container search-panel">
+        <div className="search-panel__head"><div><span>DAVAM FINDER</span><h2 id="search-title">دنبال چه ساعتی هستید؟</h2></div><button className="close-button" onClick={onClose} aria-label="بستن جست‌وجو"><X size={22} /></button></div>
+        <div className="search-input"><Search size={22} /><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="نام مدل، کالکشن یا سبک را بنویسید..." /><kbd>ESC</kbd></div>
+        <div className="search-panel__label">{query ? `${new Intl.NumberFormat('fa-IR').format(results.length)} نتیجه` : 'پیشنهادهای محبوب'}</div>
+        <div className="search-results">
+          {results.length ? results.map((product) => (
+            <button key={product.id} onClick={() => onSelect(product)}>
+              <img src={product.image} alt="" /><span><small>{product.collection}</small><strong>دوام «{product.name}»</strong><em>{formatPrice(product.price)}</em></span><ArrowUpLeft size={19} />
+            </button>
+          )) : <div className="search-empty"><Search size={27} /><strong>نتیجه‌ای پیدا نشد</strong><p>نام مدل یا دسته‌بندی دیگری را امتحان کنید.</p></div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CartDrawer({ items, total, onClose, onUpdate, onCheckout, onBrowse }) {
+  const freeShipping = 15000000;
+  const remaining = Math.max(0, freeShipping - total);
+  const progress = Math.min(100, (total / freeShipping) * 100);
+  return (
+    <div className="overlay overlay--cart" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <aside className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+        <header><div><ShoppingBag size={21} /><h2 id="cart-title">سبد خرید</h2><span>{new Intl.NumberFormat('fa-IR').format(items.reduce((sum, item) => sum + item.quantity, 0))} کالا</span></div><button className="close-button" onClick={onClose} aria-label="بستن سبد"><X size={21} /></button></header>
+        {items.length ? (
+          <>
+            <div className="shipping-progress"><div><Truck size={17} /><p>{remaining > 0 ? <><b>{formatPrice(remaining)}</b> تا ارسال رایگان</> : <><b>ارسال سفارش شما رایگان شد</b></>}</p></div><span><i style={{ width: `${progress}%` }} /></span></div>
+            <div className="cart-items">
+              {items.map((item) => (
+                <article className="cart-item" key={item.id}>
+                  <img src={item.image} alt={`ساعت ${item.name}`} />
+                  <div><span>{item.collection}</span><h3>دوام «{item.name}»</h3><small>{item.color}</small><strong>{formatPrice(item.price)}</strong><div className="quantity-control"><button onClick={() => onUpdate(item.id, -1)} aria-label="کم کردن تعداد"><Minus size={14} /></button><span>{new Intl.NumberFormat('fa-IR').format(item.quantity)}</span><button onClick={() => onUpdate(item.id, 1)} aria-label="افزودن تعداد"><Plus size={14} /></button></div></div>
+                  <button className="cart-item__remove" onClick={() => onUpdate(item.id, -item.quantity)} aria-label="حذف کالا"><X size={16} /></button>
+                </article>
+              ))}
+            </div>
+            <footer><div className="cart-summary"><span>مجموع سفارش</span><strong>{formatPrice(total)}</strong></div><small>هزینه ارسال در مرحله بعد محاسبه می‌شود.</small><button className="button button--dark" onClick={onCheckout}>ادامه و ثبت سفارش <ArrowLeft size={18} /></button><div><ShieldCheck size={15} /> پرداخت امن و ضمانت اصالت کالا</div></footer>
+          </>
+        ) : (
+          <div className="empty-cart"><span><ShoppingBag size={34} /></span><h3>سبد خرید شما خالی است</h3><p>شاید ساعت بعدی شما بین انتخاب‌های محبوب دوام باشد.</p><button className="button button--dark" onClick={onBrowse}>دیدن ساعت‌ها <ArrowLeft size={17} /></button></div>
         )}
+      </aside>
+    </div>
+  );
+}
+
+function QuickView({ product, favorite, onFavorite, onClose, onAdd }) {
+  const [quantity, setQuantity] = useState(1);
+  return (
+    <div className="overlay quick-overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <section className="quick-view" role="dialog" aria-modal="true" aria-labelledby="quick-title">
+        <button className="close-button quick-view__close" onClick={onClose} aria-label="بستن"><X size={21} /></button>
+        <div className="quick-view__media"><img src={product.image} alt={`ساعت ${product.name}`} /><span>{product.badge}</span></div>
+        <div className="quick-view__content">
+          <span className="quick-view__collection">{product.collection}</span>
+          <h2 id="quick-title">دوام «{product.name}»</h2>
+          <small dir="ltr">{product.latinName}</small>
+          <div className="quick-rating"><span><Star size={14} fill="currentColor" /> {product.rating}</span><i /> <span>{product.reviews} دیدگاه خریداران</span></div>
+          <p>{product.description}</p>
+          <div className="quick-specs"><span><small>موتور</small><strong>{product.movement}</strong></span><span><small>اندازه قاب</small><strong>{product.caseSize}</strong></span><span><small>شیشه</small><strong>{product.glass}</strong></span><span><small>مقاومت آب</small><strong>{product.resistance}</strong></span></div>
+          <div className="quick-color"><span><small>رنگ انتخابی</small><strong>{product.color}</strong></span><i /><i /><i /></div>
+          <div className="quick-buy"><div><strong>{formatPrice(product.price)}</strong>{product.oldPrice && <del>{formatPrice(product.oldPrice)}</del>}</div><div className="quantity-control"><button onClick={() => setQuantity((value) => Math.max(1, value - 1))}><Minus size={14} /></button><span>{new Intl.NumberFormat('fa-IR').format(quantity)}</span><button onClick={() => setQuantity((value) => value + 1)}><Plus size={14} /></button></div></div>
+          <div className="quick-actions"><button className="button button--dark" onClick={() => onAdd(quantity)}><ShoppingBag size={18} /> افزودن به سبد خرید</button><button className={`quick-favorite ${favorite ? 'active' : ''}`} onClick={onFavorite} aria-label="علاقه‌مندی"><Heart size={20} fill={favorite ? 'currentColor' : 'none'} /></button></div>
+          <div className="quick-assurance"><span><BadgeCheck size={16} /> ضمانت اصالت</span><span><Truck size={16} /> ارسال امن</span><span><RotateCcw size={16} /> ۷ روز تعویض</span></div>
+        </div>
       </section>
     </div>
   );
